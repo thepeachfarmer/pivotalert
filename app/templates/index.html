@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PivotAlert</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><span>Pivot</span>Alert</h1>
+            <div class="status-bar">
+                <span>
+                    <span class="status-dot {{ 'green' if has_imap else 'red' }}"></span>
+                    Email {{ "Connected" if has_imap else "Not Configured" }}
+                </span>
+                <span>
+                    <span class="status-dot {{ 'green' if has_twilio else 'red' }}"></span>
+                    SMS {{ "Ready" if has_twilio else "Not Configured" }}
+                </span>
+                <span>
+                    <span class="status-dot {{ 'green' if members else 'yellow' }}"></span>
+                    {{ members|length }} Member{{ "s" if members|length != 1 else "" }}
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Members -->
+        <div class="section">
+            <h2>Members</h2>
+            <form action="/members/add" method="post">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="843-555-1234" required>
+                    </div>
+                    <div style="display:flex;align-items:flex-end;">
+                        <button type="submit" class="btn btn-primary">Add Member</button>
+                    </div>
+                </div>
+            </form>
+
+            {% if members %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Added</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in members %}
+                    <tr>
+                        <td>{{ m.name }}</td>
+                        <td>{{ m.phone }}</td>
+                        <td>{{ m.created_at[:10] if m.created_at else "" }}</td>
+                        <td>
+                            <form action="/members/delete/{{ m.id }}" method="post" style="display:inline"
+                                  onsubmit="return confirm('Remove {{ m.name }}?')">
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">No members yet. Add someone above to start receiving alerts.</div>
+            {% endif %}
+
+            {% if members and has_twilio %}
+            <div style="margin-top: 0.75rem; text-align: right;">
+                <button class="btn btn-test" onclick="testSms()">Send Test SMS</button>
+                <span id="test-result" style="font-size:0.8rem; margin-left:0.5rem;"></span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Recent Alerts -->
+        <div class="section">
+            <h2>Recent Alerts</h2>
+            {% if alerts %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject</th>
+                        <th>Level</th>
+                        <th>SMS Sent</th>
+                        <th>Preview</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for a in alerts %}
+                    <tr>
+                        <td style="white-space:nowrap">{{ a.created_at[:16] if a.created_at else "" }}</td>
+                        <td>{{ a.subject }}</td>
+                        <td>
+                            <span class="badge badge-{{ a.alert_level }}">{{ a.alert_level }}</span>
+                        </td>
+                        <td>{{ a.sms_sent }}</td>
+                        <td class="snippet" title="{{ a.body_snippet }}">{{ a.body_snippet }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">No alerts yet. They'll appear here when emails are processed.</div>
+            {% endif %}
+        </div>
+
+        <!-- Settings -->
+        <div class="section">
+            <h2>Settings</h2>
+            <form action="/settings/save" method="post">
+                <p class="settings-note">
+                    Credentials are saved to the database. Leave fields blank to keep existing values.
+                </p>
+
+                <details {{ "open" if not has_imap else "" }}>
+                    <summary>Gmail IMAP Configuration</summary>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>IMAP Host</label>
+                            <input type="text" name="imap_host" placeholder="imap.gmail.com"
+                                   value="{{ settings.get('imap_host', 'imap.gmail.com') }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Gmail Address</label>
+                            <input type="email" name="imap_user" placeholder="youraccount@gmail.com"
+                                   value="{{ settings.get('imap_user', '') }}">
+                        </div>
+                        <div class="form-group">
+                            <label>App Password</label>
+                            <input type="password" name="imap_pass"
+                                   placeholder="{{ '********' if settings.get('imap_pass') else 'paste app password' }}">
+                        </div>
+                    </div>
+                </details>
+
+                <details {{ "open" if not has_twilio else "" }}>
+                    <summary>Twilio SMS Configuration</summary>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Account SID</label>
+                            <input type="text" name="twilio_sid" placeholder="ACxxxxxxx"
+                                   value="{{ settings.get('twilio_sid', '') }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Auth Token</label>
+                            <input type="password" name="twilio_token"
+                                   placeholder="{{ '********' if settings.get('twilio_token') else 'auth token' }}">
+                        </div>
+                        <div class="form-group">
+                            <label>Twilio Phone Number</label>
+                            <input type="tel" name="twilio_from" placeholder="+18435551234"
+                                   value="{{ settings.get('twilio_from', '') }}">
+                        </div>
+                    </div>
+                </details>
+
+                <div style="margin-top: 0.75rem;">
+                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+    async function testSms() {
+        const btn = document.querySelector('.btn-test');
+        const result = document.getElementById('test-result');
+        btn.disabled = true;
+        btn.textContent = 'Sending...';
+        result.textContent = '';
+        try {
+            const resp = await fetch('/test/sms', { method: 'POST' });
+            const data = await resp.json();
+            if (data.sent_to && data.sent_to.length > 0) {
+                result.textContent = 'Sent to: ' + data.sent_to.join(', ');
+                result.style.color = '#22c55e';
+            } else {
+                result.textContent = 'No messages sent. Check Twilio config.';
+                result.style.color = '#f59e0b';
+            }
+        } catch (e) {
+            result.textContent = 'Error: ' + e.message;
+            result.style.color = '#ef4444';
+        }
+        btn.disabled = false;
+        btn.textContent = 'Send Test SMS';
+    }
+    </script>
+</body>
+</html>

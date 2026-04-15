@@ -1,0 +1,260 @@
+Delivered-To: smcleod@macspride.com
+Received: by 2002:a05:6400:680c:10b0:2cb:80c5:bccb with SMTP id 12-n1csp1836994ect;
+        Mon, 13 Apr 2026 10:30:44 -0700 (PDT)
+X-Forwarded-Encrypted: i=4; AFNElJ/UpsU6IgaWOS5y1Vp9qfftg/3VhbHjqzM031jCJOa3pktiAlY+k5Kgw5nIZ36ckNQX6nF856tK@macspride.com
+X-Received: by 2002:a05:620a:468c:b0:8c7:1118:c514 with SMTP id af79cd13be357-8ddcd6fee90mr2098455485a.17.1776101443962;
+        Mon, 13 Apr 2026 10:30:43 -0700 (PDT)
+ARC-Seal: i=3; a=rsa-sha256; t=1776101443; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=RAm46jaKUfDrWtii80nG/bcpmi07xkaI40IQx5iOsUy2hTyd7qYP/20gjkr8AohY11
+         F909OuL+QiONaGyO2/J+vRHrwG/snIlII8whflPAx/n76cMEHR+c4npk1mQDW5ze58NH
+         kV2P4kgvZNxbV0hPHsiiQUlznhSLaT0ttu4Q8wAYVaYQv9dRREBAc31GuoyTA6qyDIjc
+         2SR4NZfutfKyoi3Eqyqhl57FpXEI1xXd57NGFWbkfF555gsSFdlUqzgr+fME4vUDiD/4
+         H62E6rFqBPXjqE6GA6UCM2ySSWcb76T0YXHm4McfkKyMOpq2oPT4JKGOtiVymJTX53m5
+         29+g==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:date:message-id:mime-version:subject:to:from
+         :dkim-signature:dkim-signature:dkim-signature;
+        bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+        fh=2d9/sJ0WtZb3OQAl5fVFWWqL1qpQmiSGzhonbcXZ9YI=;
+        b=RfmUkCiFtKG4n4/1ut07VzrvcVA1IZmntOsCuTfxNILerpdWNuWH/SNwMNVcQcfr5h
+         ZluUr33yjFQ7Zj1sRYsjaYxXpN+40p3JRnIbfeeHiEqWyuCONAtL78dAoONddtLL9h2h
+         gAo0spJz/lJ+7C1plAKcv9axIzP5x2zO7Cbh9s+b2y5o2OfSAISbPnYMR51AmFfEI7xX
+         4Z+BAW11r4opnTKCswgVFrX1u1LYzXySs2sxz6u7iwCBtwL3uoSj4PlKIXcAJWh6XtMm
+         BAmRwotjcll+XfFzwTrEFCKw89GzmRLwdKpTgKJP+HjlXDxlksKrzj2gmerojVtqoUKG
+         Cz3A==;
+        dara=google.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com header.b=aEXLuK6r;
+       dkim=pass header.i=@rapidnotifications.com header.s=floorrf3jn5nf734fszykxu4xzyjgbt5 header.b=Y+5oZS3Q;
+       dkim=pass header.i=@amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=Pvu4gm2T;
+       arc=pass (i=2 spf=pass spfdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=rapidnotifications.com dkim=pass dkdomain=amazonses.com);
+       spf=pass (google.com: domain of bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c10d::3 as permitted sender) smtp.mailfrom="bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com";
+       dara=fail header.i=@macspride.com
+Return-Path: <bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com>
+Received: from nat.perception-point.io (nat.perception-point.io. [54.227.64.76])
+        by mx.google.com with ESMTPS id af79cd13be357-8ddb32abdafsi1152445385a.0.2026.04.13.10.30.43
+        for <smcleod@macspride.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 10:30:43 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c10d::3 as permitted sender) client-ip=2a01:111:f403:c10d::3;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com header.b=aEXLuK6r;
+       dkim=pass header.i=@rapidnotifications.com header.s=floorrf3jn5nf734fszykxu4xzyjgbt5 header.b=Y+5oZS3Q;
+       dkim=pass header.i=@amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=Pvu4gm2T;
+       arc=pass (i=2 spf=pass spfdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=rapidnotifications.com dkim=pass dkdomain=amazonses.com);
+       spf=pass (google.com: domain of bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c10d::3 as permitted sender) smtp.mailfrom="bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com";
+       dara=fail header.i=@macspride.com
+Authentication-Results: spf=pass (sender IP is 54.240.8.81)
+ smtp.mailfrom=bounce.rapidnotifications.com; dkim=pass (signature was
+ verified) header.d=rapidnotifications.com;dkim=pass (signature was verified)
+ header.d=amazonses.com;dmarc=bestguesspass action=none
+ header.from=rapidnotifications.com;
+Authentication-Results: amazonses.com;
+ spf=fail (spfCheck: domain of peedeeelectric.onmicrosoft.com does not designate 209.85.210.197 as permitted sender) client-ip=209.85.210.197; envelope-from=bounces+SRS=XaB6u=CM@peedeeelectric.onmicrosoft.com; helo=mail-pf1-f197.google.com;
+ dkim=pass header.i=@peedeeelectric.onmicrosoft.com;
+ dkim=pass header.i=@amazonses.com;
+ dkim=pass header.i=@rapidnotifications.com;
+ dmarc=none header.from=rapidnotifications.com;
+X-PERCEPTION-POINT-VERDICT: CLN
+X-PERCEPTION-POINT-SPF: 
+X-PERCEPTION-POINT-SPAM: PASS
+X-PERCEPTION-POINT-SENDER-IP: 2a01:111:f403:c10d::3
+X-PP-Forefront-Antispam-Report: CIP:54.240.8.81;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:a8-81.smtp-out.amazonses.com;PTR:a8-81.smtp-out.amazonses.com;CAT:NONE;SFS:(13230040)(32142699015)(61400799027)(376014)(9140799003)(48200799018)(8096899003)(19002099003)(56012099003)(18002099003)(16102099003)(55112099003);DIR:OUT;SFP:1102;
+Return-Path: <bounces+SRS=XaB6u=CM@peedeeelectric.onmicrosoft.com>
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id ooqaumdpki3la9e04sqgm8f9gdhc7iv5vclbh1g1
+ for smcleod@macspride.com;
+ Mon, 13 Apr 2026 17:30:28 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: fail (spfCheck: domain of peedeeelectric.onmicrosoft.com does not designate 209.85.210.197 as permitted sender) client-ip=209.85.210.197; envelope-from=bounces+SRS=XaB6u=CM@peedeeelectric.onmicrosoft.com; helo=mail-pf1-f197.google.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFIWlFnbTFhTXJYSTdIN2cwWFd4MWJOQ1Vjd2xrU05PZE16cTVzTXJTTHk3U21PNW5oaC9BMDgyWURIeG9oblp1c1BwWkdlM0RaR0RvUmtrM29yTkxHVDlTeU5iOWRIOWoxSDdZbnNPY0NCN3NtSHdjT0JNZ2x6S0xzeS83SkJJZmF6LytWNzJ3OERmb2lFb0pHQUJGbXJqeElSWkc3bGNRSTFHeDdXZ2h1Wnk1TlFRdVdTSFkrd2RwcGJQZHNib1Z0VGg4S3I0SytqamdMMjIwY0VmQUlPekhXdUFxZHlHRk9GKzRldFM5bzhVMlZUaThXRENOS2ZxMUZoNDdoUXNUWm9MUkJ3MFowU0U3VWd3YVBYcEs0R0VBWStGak1ZbjJxb0ZkSFg0NGNDSSs5V0dGQzFGRm9qNUFRMENUNFdpdDhSbmY3eEhGd1dvRGFwQ1ZoVGRrWHo=
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=AhQ5kgT1hcpCZye0xaqFlfZbAIBCEYAm3ntqTX95lbEW3DyFQSi+zVTjwQY1UYh3VDNpFZeucShPau9VCFyZSYP94+Zpn5o6FpmhyWBcmwaDTS3TvXVyAkCt1IaCBTtBlL5V9zYUBoG2MvdzvyddRvuvT87J8ogGu+C/MQq6rAw=; c=relaxed/simple; s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1776101429; v=1; bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-82ce0a9e558so3457020b3a.1
+        for <smcleod@macspride.com>; Mon, 13 Apr 2026 10:30:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=3; AFNElJ8JrnEXa1737Q+oeYhe+mC07tx+lpYS7GpeTl9eJuyJb52SS1FKAiLkIMYbav+/wKrftM0cHofo@macspride.com
+X-Gm-Message-State: AOJu0YwfVFn0AKTBWf3gx92wIAg8m4mdAPC24PJ9gy0V3exYjD6p8RMp
+	R6a7b0SzITC24b/oY9C497IOqe9azDXU0jFYaOWTGcA1TS++R6gXQ/JEbVNz2Mnt3oOyuJ9rGBI
+	htIKWON0rAWNA+fYSupoBSseBwhTNjHpWNR/1GnIxE6kde3GCNrdcVDHIct+DnFu2M/We4OWJ71
+	J6gwDOOG8luw==
+X-Gm-Gg: AeBDievSDBLaENGeGWcemudLEgrW2LE4qDDrG4VmE+CujUbkmaDpKQLhHtyUCcBGmIC
+	oThNtBEvU1jpb6YBhuHBmfxnnB8nBAIQ+uRLQeZhJoYFe2LAr5cNkNrxjSSvW9A5rNpVD1oSj0O
+	IF9JpOJg7JvXpBxHftAHMMao9vYOT5LAzBJkHfdokwFMEt9nMJZvUmYhRYuSukc5/VWTTraZ1yX
+	dlGDnlGf6gYiLMkhEgpISLKzKUV6uODUm+fOVpKQ67hVesWi8WrIW2/ILMHlD6Ec8rnA4kd+tba
+	TBgzSj6+nRTso8CimP11ed6rWYPEUAx3xHjFjDiu7ywCkooFVWZA8xDn5ZE7gs1FmFJrLFVI10A
+	eu1ygfavF25AzWxnYS4bcdvvulrWNSa8CbyiZKUO4MSaAiunx5E14VlsFgoT6Fi9TzvpPO61FyY
+	9Nk7bYep67LsYEJ4zAzveDttn9tLymxkVplVGk7Ri895fz27sI71IDNHD+shZj6CgYqCc6PFQnN
+	S/CigxEOX7FbBqFvHaqiKAnuQsY+FzJ92UhWiG5+0ov4AXR+Lgi7VCCjDe2LbA=
+X-Received: by 2002:a05:6a00:4b0b:b0:82c:9c90:58c9 with SMTP id d2e1a72fcca58-82f0c12f435mr13603618b3a.4.1776101428347;
+        Mon, 13 Apr 2026 10:30:28 -0700 (PDT)
+X-Received: by 2002:a05:6a00:4b0b:b0:82c:9c90:58c9 with SMTP id d2e1a72fcca58-82f0c12f435mr13603494b3a.4.1776101426925;
+        Mon, 13 Apr 2026 10:30:26 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1776101426; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=cL5VbXrCkCEPpTLY+XauI5bX0dwYY6VSwjL08x1YNB/lXNFawMUTSZhOe5VARUmwla
+         SlhkclV3cESiIknmlbiAXeNcfat0Mt3FCiBtmNM+v7Wo3rcJhReSOhMcVECZ9b4WCv6Y
+         +f6BYH5hHZPvoIeR8s0iberKWplGlHfChog6QWxFxzQ4s2PUW9QOQZlgRWXl5vU+pDU4
+         gPrShOgdMYOcn4FExLOLnixwjETa5e0BFGUoeYRqfCOg9viPawzFdD5EeYu7tz9Etxyb
+         Hz7tPQgVkt0rJlR5zHeEmDDcIlnR8q+oQak3zoucjVoHyLPXKUr3OCdEzUJ+BQvxQdZ3
+         mSRg==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=feedback-id:date:message-id:mime-version:subject:to:from
+         :dkim-signature:dkim-signature:dkim-signature;
+        bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+        fh=bex1j7Tf+AjYHQ7+KthXN/510lz4nUSRw/66TqYuedo=;
+        b=i6+z6dhWLuv0hLhfKYOuehSIVLZ7HfH5MOaq8IBoupdGDPE+StqUpfK+3urNlhaQnH
+         +5wmEWInS3s1soF6dIgv4Gve3iv8vlxDJJxRXwht1cMNBJtA60eDmEnUy3hCzRSqYiCO
+         D4o+I8RD63U5XGqH7yRA+ppPST9dkvl5ogY9+hvgjYqVHyOltmNQogtgfOJ2Lii5wLGG
+         saEPURR9Im6vdg4S8VOzbehiYtVZ1uqKc+0spACGy8xVXNt1d6FThQmDfQSwv7SJFkVH
+         2fV90y/P84ZGtagw59yd3qBBqP3NCJJ7rW5Lm3W97pgKooAt1c41W2t5eu5au3mJJEzD
+         1ESA==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com header.b=aEXLuK6r;
+       dkim=pass header.i=@rapidnotifications.com header.s=floorrf3jn5nf734fszykxu4xzyjgbt5 header.b=Y+5oZS3Q;
+       dkim=pass header.i=@amazonses.com header.s=224i4yxa5dv7c2xz3womw6peuasteono header.b=Pvu4gm2T;
+       arc=pass (i=1 spf=pass spfdomain=bounce.rapidnotifications.com dkim=pass dkdomain=rapidnotifications.com dkim=pass dkdomain=amazonses.com);
+       spf=pass (google.com: domain of bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c10d::3 as permitted sender) smtp.mailfrom="bounces+SRS=XaB6u=CM@peedeeelectric.onmicrosoft.com"
+Return-Path: <bounces+SRS=XaB6u=CM@peedeeelectric.onmicrosoft.com>
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazlp170110003.outbound.protection.outlook.com. [2a01:111:f403:c10d::3])
+        by mx.google.com with ESMTPS id d2e1a72fcca58-82f0c56f5edsi21519410b3a.235.2026.04.13.10.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 13 Apr 2026 10:30:26 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+srs=xab6u=cm@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c10d::3 as permitted sender) client-ip=2a01:111:f403:c10d::3;
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BAef8y4CLp54AYR37m9WK90vS1BAs0fJschTvKN4w4wkU8lFcljC9nFWaVR6YqIXVu5hGWff5CEPROF0DS82zLl+rPt30hFmOoPMbshgTm9gLS3EhBPoq0xOantjXlpneX7TJk4q2DoJNKE4dhW8GjGgWb4oLiD7ODIWdrqJlAkrrEb6NYho4gC9LvK1lwWjFlnxfL2oy4hg06/eSYPjUC/PZPpiZgLJy7+rpihUnt2h63fCxhe76frLNZ5sIh1oLoO++NTkVBGDmDrWkdEqHH7GvPArlDGENOK/vdoQ5GTt+cy1A8+vZty+SDj/m76L0ZlBh19GTkqWLDC2QsWCew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+ b=Z5WlMh7LRrFly+Xe/eOUMbYr745u4EaQX7dHORDVGDdIMW6PZ1K7Iu0TwxtTLypsVIfrHLd736mvTw2yjfFb+0D0aeNy5TsUM1w8q6Ng/bcc0hl8SyO0Bdgy1H7NeRyaOE2yuG1r+aQ4Clnz6sVXemfNlVoeqxpDe1GnHhg2JgKJSHzvfuUkheh2G3r3oQocvhhTNU+6b9NsuJ8Ns/eR1BiSrUaq/+WDZWGUX0gJpZtWNfEwfWeQLpaacH4Z3orFIaG5E9XE7Diwea5zNPe80BobiosysS8jIPi9/scNVU//zs/25q0T4gTDA/5jBrVMfHQvyRmol3NHjx3uCthPAA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 54.240.8.81) smtp.rcpttodomain=mpd.coop
+ smtp.mailfrom=bounce.rapidnotifications.com; dmarc=bestguesspass action=none
+ header.from=rapidnotifications.com; dkim=pass (signature was verified)
+ header.d=rapidnotifications.com; dkim=pass (signature was verified)
+ header.d=amazonses.com; arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=peedeeelectric.onmicrosoft.com; s=selector1-peedeeelectric-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+ b=aEXLuK6rvcx4gYydQCwrY3CAAgSLLwpjj83vcPVEJS98WFkt0UhyZ4UaYVFsv4Mf/t3DMelFSbLsQG7lk4Yo2SovRrquBWvsyRFCjt4roL5WwxeKSVz1PmETEkq+CLQCzWifnMi/oytnqrq9GjHkoMIWEQSkhT8qr/P7o3FfCcVI4/+veWt8KSuE2sd2NEgmBGViXaJqpbk9LAa6wLbKjT3fYYY3HyXzZLFdDXWptDQpVWxblbz6nyWyZa7a86S1xZs84ynE3rKzPvepDZhX1fU32Oq2GoIdb9O9eHcTcTa1sfFFPjnzIJU48g0mPlmhjKgURSPw7fCemqPiLzRa0A==
+Received: from DM6PR02CA0062.namprd02.prod.outlook.com (2603:10b6:5:177::39)
+ by IA3PR02MB11270.namprd02.prod.outlook.com (2603:10b6:208:540::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.46; Mon, 13 Apr
+ 2026 17:30:22 +0000
+Received: from DS1PEPF0001709A.namprd05.prod.outlook.com
+ (2603:10b6:5:177:cafe::56) by DM6PR02CA0062.outlook.office365.com
+ (2603:10b6:5:177::39) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.48 via Frontend Transport; Mon,
+ 13 Apr 2026 17:30:22 +0000
+Received-SPF: Pass (protection.outlook.com: domain of
+ bounce.rapidnotifications.com designates 54.240.8.81 as permitted sender)
+ receiver=protection.outlook.com; client-ip=54.240.8.81;
+ helo=a8-81.smtp-out.amazonses.com; pr=C
+Received: from a8-81.smtp-out.amazonses.com (54.240.8.81) by
+ DS1PEPF0001709A.mail.protection.outlook.com (10.167.18.104) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.9769.17
+ via Frontend Transport; Mon, 13 Apr 2026 17:30:22 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=floorrf3jn5nf734fszykxu4xzyjgbt5; d=rapidnotifications.com;
+	t=1776101421;
+	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
+	bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+	b=Y+5oZS3QYqBqZgrXHWBjELsjc2hB4py/1ERMdT3QPuI3Xk+7+rTCsEPGuxyq/y+1
+	p0oeQJQA9Q+uHnOscQAabzzCY6kOosb64UdHczXgZym3cfpdx/MCIqIcm1tipRt4kbP
+	MTyQZ6sniFqa9Pv9axwYPmSH2kAjxg1Q7Cs5BIzo=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1776101421;
+	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date:Feedback-ID;
+	bh=kRyloDm3sniZveRLXTtiDkn3zg3+IjN4I+E4/S6/2bI=;
+	b=Pvu4gm2T5QtackrSc7HOaXtDVe7nzcmcy63HlGJZTNRU6nOOSLeui1maHz2Gn2BH
+	n3qKjGEP8yz5fOXaogwpYrR7fUvlXLThx2TzKLyAB4crwfdo7369xLVokqhxNlAKXhC
+	/PxeQqlZLMwF5xeT3httJDG22XYL7/KMwpvQ4Mdg=
+From: cepci@rapidnotifications.com
+To: mpdloadcontrolfrontier@mpd.coop
+Subject: No Control
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_198470_1356729707.1776101421476"
+Message-ID: <0100019d87e4f1a4-5bac407c-3ca2-42e0-931d-0f64af53ab51-000000@email.amazonses.com>
+Date: Mon, 13 Apr 2026 17:30:21 +0000
+Feedback-ID: ::1.us-east-1./bQyywW3AT78xxHXdaXIUXPHLqOez09b1ayt1tjpv74=:AmazonSES
+X-SES-Outgoing: 2026.04.13-54.240.8.81
+Return-Path:
+	0100019d87e4f1a4-5bac407c-3ca2-42e0-931d-0f64af53ab51-000000@bounce.rapidnotifications.com
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88:0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709A:EE_|IA3PR02MB11270:EE_
+X-MS-Office365-Filtering-Correlation-Id: 46184533-a8c0-4d33-eb18-08de99825778
+X-LD-Processed: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88,ExtAddr
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 0
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|32142699015|61400799027|376014|9140799003|48200799018|8096899003|19002099003|56012099003|18002099003|16102099003|55112099003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZmV3aUNwQVFqTElERTl5cjMxbk1MRVllWFpqY2NXVzZjbW5PTmxXcllUcFZz?=
+ =?utf-8?B?V1dGL1pnMEVRdTd2MVNVK2x4UnBDSys3bkdmTXNrbHpvV1g0T0hxSFZ1ZDZB?=
+ =?utf-8?B?QkV2d0NtWkJiMUpiSmVwNFN1TUJ5T0FlZ0k0UW85WnVBS043YTVUTkVkeG5E?=
+ =?utf-8?B?U1VnUjdWMGFlWndjY25ZUlpyOGp0YWRjMzlzbi80VWdKNzg3UllHekpSZmox?=
+ =?utf-8?B?RWpnSEJEWndLMXRpOTZ1eUUvcFFIOFU3UnROSHhObzdrcFF2REJ5TWgwWUQw?=
+ =?utf-8?B?SWdvbHM2MGFLLy9BM0YrM2FuQitPY09ZRWRKZEtOcGxGL2dmYWpNckVFdGdh?=
+ =?utf-8?B?VkdJMWgyeGVqQncrOWFiWXh2endPd041SkhDNnVFVklkQ2xXWjhJT0cwWUIr?=
+ =?utf-8?B?VWRyTnN6NVFvdENkaGxFV045Y25OdTcxcVZQV0M0dFFzUlNVMEVzb20rSmhG?=
+ =?utf-8?B?UmlGL1dEcmlqdTdlMEc1VCtvNmhTeVVBajVub0paUnhlOW9sYjFvMm5tcDBk?=
+ =?utf-8?B?SElOZGY0aG1zWitlZTVlK1dIbTZ4Snk5VmF6SHpQNUo2QWZGWWQ0RFZPWkh2?=
+ =?utf-8?B?eGJIbTBPYlJUY2J1TDQ2NHB4UEEzeDQ4RFBjKzhmYU9VWmZsMm5BNHlQeEll?=
+ =?utf-8?B?VTVlYWp0MDBuOEtQQW9TcktNSklzMVJzVWEyazQxQkZaME1uRVZHbWdubGZC?=
+ =?utf-8?B?blFVRDc0ZE51ZExoc0l2OFB1ZWFqbmNGMEdvc3ZMeW9EQ0pCU2JUTkQ1ZTJV?=
+ =?utf-8?B?RlF6Ui9WWkJjakhEVG5aclZMeG5oRWY2RXRGeSsvWXFIenR4Mk0wVVo5U0Zq?=
+ =?utf-8?B?eGpENXRiRGZJWDB1eERaRjFMQ0hLSU9lZjlFUnFlMzhob1BLVk1VTWJISEND?=
+ =?utf-8?B?Mi8vYWJwNzR1VU85VTZHVG9zOExiTFZTVnhyZVlJOU02SGJ6Q3RMbjF6S2w0?=
+ =?utf-8?B?TlFyTVR6ZnBtQ2FaV0srSWF2Y1NiakFITnM0RlRHcUFqbkNaN2d3YVBsVGwz?=
+ =?utf-8?B?Y1AvVUFjV1ZMbTc0VTdJOG9pYjEveVZzQVN1VndlOVB0QmZIYVRlMU91SVUw?=
+ =?utf-8?B?V1QwR2RMLy9hbHMvOHNiUTJTanl4ZUNCUU9ITExxb3c4a2psZUZxU0RhVmRM?=
+ =?utf-8?B?WEozL2NKVllyc2ZIK2JxR3dnbkRHTDZ1dWVJYk5wcmp6eUVSZk1yVmxQa01j?=
+ =?utf-8?B?ZzNWUVZiRUNaWmdCaFIwOUx3NlJhRVV2QldkZVhVdzBSKzZCWVdkN0pnVlFp?=
+ =?utf-8?B?QktrMVVOdEhqcHRZNlcyT1pHK3RaVnkxS0Z2LzRjdy9GR2FsVEh6OUhXR1pa?=
+ =?utf-8?B?eDREa1FBQUhyaVBIRDl3czZycXZORjc2Yyt4RmRITm53WnVhQTJxWG5KZlk3?=
+ =?utf-8?B?Q1E0QXF4YjNQaDVINmhYaGlhVnprd2k4ZHJVME1paVRTOVhLN1p2T2hDNEhX?=
+ =?utf-8?B?TlpVb0J1VFByaXp5Vm12R2N1OEhjYUdnSDVtL082dDdmYjhsNjNOQTdFUU0v?=
+ =?utf-8?B?QndVYkdrZFhJOStDbDdoQWpxQWo0eWJFZDhaak8wTHI5d0EwcHd6RDBBU0pt?=
+ =?utf-8?B?QUdaL3R5ZzVkVUFrRnZYbjdjQklLRUdCTGhWK09QdVllQmNhYkZlNlVnVUIz?=
+ =?utf-8?B?eDFDMEJOVFVNVEduMUs3RHdiTTVvcGJnTzdHNVVoK0c3dEcvRmJCM1dZQ1FB?=
+ =?utf-8?B?MGJxbmRWS29uNHpuNzMvWEJBNWhteEhGek5XdnFtcmE3bGFPeUpjcWh3PT0=?=
+X-Forefront-Antispam-Report:
+	CIP:54.240.8.81;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:a8-81.smtp-out.amazonses.com;PTR:a8-81.smtp-out.amazonses.com;CAT:NONE;SFS:(13230040)(32142699015)(61400799027)(376014)(9140799003)(48200799018)(8096899003)(19002099003)(56012099003)(18002099003)(16102099003)(55112099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	BnZ5Gm6P7Y2YtooudXVFKOL8q6TzcshB9Mq9g1VYYMtMoEt1gXmqdbmXQ5SIPsQb5yTq+LQrHFlXiqUMFBACp4TczQyriQICVS6sy4O87GkCBPwn0GBwUC7+W+UcFBK4MrBvJAFm5ONWKLTvN3yGTeLidRX1f3MN+cDtEI1e1M8dhiz7DTku7a1T97RBRGQdseB1CHAYJAYm0poL9+HuObybwtkxEj2AsGBIjbw1tUKX9Xdv87Pq4RkJBmUM/GZAF6LXM7dbMWmKNcJKOwwHXGGGm64zFwKZosXzNDSpBdx2Q9sG2JEuueulp5VtRedZzsZ3hUkzElRoiAD7fiYybIqhWCQiaf0bAlIMA8m55hGoerpgr5GwGZxFboxJqdKK6ZR/TfP713LpGt5yyl3uf8umwyg2Hbpqj4WlMrWShR0St+dq1n+EJc8KX1tgQ+/z
+X-ExternalRecipientOutboundConnectors: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-OriginatorOrg: peedeeelectric.onmicrosoft.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Apr 2026 17:30:22.3168
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 46184533-a8c0-4d33-eb18-08de99825778
+X-MS-Exchange-CrossTenant-Id: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS1PEPF0001709A.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR02MB11270
+X-PERCEPTION-POINT-ROUTING:  AQWEDSFQ
+X-Gm-Spam: 0
+X-Gm-Phishy: 0
+
+------=_Part_198470_1356729707.1776101421476
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Control for this evening and tomorrow morning will not be required. Next scheduled message: 1:30 p.m. tomorrow afternoon.</p><p>NOTICE to Recipient: The information contained in this message is confidential and is intended exclusively for the individual or entity to whom it is addressed. This communication may not be forwarded or otherwise disseminated to any other entity. Generators whose operation is affected by the information contained in this correspondence must be operated in compliance with applicable environmental regulations including the EPA's RICE rules. Failure to comply with applicable environmental regulations may subject recipient to criminal or civil liability for non-compliance</p>
+------=_Part_198470_1356729707.1776101421476
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<p>Control for this evening and tomorrow morning will not be required. Next scheduled message: 1:30 p.m. tomorrow afternoon.</p><p>NOTICE to Recipient: The information contained in this message is confidential and is intended exclusively for the individual or entity to whom it is addressed. This communication may not be forwarded or otherwise disseminated to any other entity. Generators whose operation is affected by the information contained in this correspondence must be operated in compliance with applicable environmental regulations including the EPA's RICE rules. Failure to comply with applicable environmental regulations may subject recipient to criminal or civil liability for non-compliance</p>
+------=_Part_198470_1356729707.1776101421476--

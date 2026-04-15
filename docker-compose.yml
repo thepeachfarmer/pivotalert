@@ -1,0 +1,14 @@
+services:
+  pivotalert:
+    image: ghcr.io/thepeachfarmer/pivotalert:latest
+    container_name: pivotalert
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - pivotalert_data:/data
+    environment:
+      - POLL_INTERVAL=60
+
+volumes:
+  pivotalert_data:
