@@ -119,6 +119,45 @@
             {% endif %}
         </div>
 
+        <!-- All Emails -->
+        <div class="section">
+            <h2>All Emails</h2>
+            {% if all_emails %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Received</th>
+                        <th>From</th>
+                        <th>Subject</th>
+                        <th>Processed</th>
+                        <th>Alert</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in all_emails %}
+                    <tr>
+                        <td style="white-space:nowrap">{{ e.created_at[:16] if e.created_at else "" }}</td>
+                        <td class="snippet" title="{{ e.sender }}">{{ e.sender }}</td>
+                        <td>{{ e.subject }}</td>
+                        <td>{{ "Yes" if e.processed else "No" }}</td>
+                        <td>
+                            {% if e.alert_triggered %}
+                            <span class="badge badge-critical">Yes</span>
+                            {% else %}
+                            <span class="badge badge-info">No</span>
+                            {% endif %}
+                        </td>
+                        <td><a href="/emails/{{ e.id }}" class="btn btn-primary" style="padding:0.25rem 0.5rem;font-size:0.75rem;">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">No emails received yet. They'll appear here as the inbox is polled.</div>
+            {% endif %}
+        </div>
+
         <!-- Settings -->
         <div class="section">
             <h2>Settings</h2>

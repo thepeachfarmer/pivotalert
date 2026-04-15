@@ -4,7 +4,22 @@
       "Bash(gh repo:*)",
       "Bash(git init:*)",
       "Bash(git remote:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Bash(twilio --version)",
+      "Bash(twilio profiles:use:*)",
+      "Bash(twilio phone-numbers:list:*)",
+      "Bash(twilio profiles:list:*)",
+      "Bash(twilio api:*)",
+      "Bash(twilio api:core:available-phone-numbers:toll-free:list:*)",
+      "Bash(twilio phone-numbers:buy:toll-free:*)",
+      "Bash(twilio api:core:incoming-phone-numbers:create:*)",
+      "Bash(twilio api:messaging:v1:tollfree-verifications:list:*)",
+      "Bash(twilio api:core:available-phone-numbers:short-code:list --country-code US --limit 1)",
+      "Bash(twilio api:core:messages:create --from \"+18438656887\" --to \"+18438577147\" --body \"test from local number\")",
+      "Bash(twilio api:core:incoming-phone-numbers:remove:*)"
     ]
   }
 }

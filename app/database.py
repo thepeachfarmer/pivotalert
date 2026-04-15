@@ -35,6 +35,21 @@ async def init_db():
                 recipients TEXT,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
+
+            CREATE TABLE IF NOT EXISTS emails (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                message_id TEXT UNIQUE,
+                sender TEXT,
+                to_addr TEXT,
+                subject TEXT,
+                body_text TEXT,
+                body_html TEXT,
+                date TEXT,
+                headers TEXT,
+                processed INTEGER DEFAULT 0,
+                alert_triggered INTEGER DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
         """)
         await db.commit()
     finally:
@@ -123,5 +138,68 @@ async def get_alerts(limit: int = 50) -> list[dict]:
         )
         rows = await cursor.fetchall()
         return [dict(row) for row in rows]
+    finally:
+        await db.close()
+
+
+async def save_email(
+    message_id: str,
+    sender: str,
+    to_addr: str,
+    subject: str,
+    body_text: str,
+    body_html: str,
+    date: str,
+    headers: str,
+) -> bool:
+    """Save an email to the database. Returns True if new, False if duplicate."""
+    db = await get_db()
+    try:
+        await db.execute(
+            "INSERT OR IGNORE INTO emails "
+            "(message_id, sender, to_addr, subject, body_text, body_html, date, headers) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (message_id, sender, to_addr, subject, body_text, body_html, date, headers),
+        )
+        await db.commit()
+        cursor = await db.execute("SELECT changes()")
+        row = await cursor.fetchone()
+        return row[0] > 0
+    finally:
+        await db.close()
+
+
+async def mark_email_processed(message_id: str, alert_triggered: bool):
+    db = await get_db()
+    try:
+        await db.execute(
+            "UPDATE emails SET processed = 1, alert_triggered = ? WHERE message_id = ?",
+            (1 if alert_triggered else 0, message_id),
+        )
+        await db.commit()
+    finally:
+        await db.close()
+
+
+async def get_emails(limit: int = 100) -> list[dict]:
+    db = await get_db()
+    try:
+        cursor = await db.execute(
+            "SELECT id, message_id, sender, to_addr, subject, date, processed, "
+            "alert_triggered, created_at FROM emails ORDER BY created_at DESC LIMIT ?",
+            (limit,),
+        )
+        rows = await cursor.fetchall()
+        return [dict(row) for row in rows]
+    finally:
+        await db.close()
+
+
+async def get_email_by_id(email_id: int) -> dict | None:
+    db = await get_db()
+    try:
+        cursor = await db.execute("SELECT * FROM emails WHERE id = ?", (email_id,))
+        row = await cursor.fetchone()
+        return dict(row) if row else None
     finally:
         await db.close()

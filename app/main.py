@@ -14,8 +14,12 @@ from app.database import (
     delete_member,
     get_alerts,
     get_all_settings,
+    get_email_by_id,
+    get_emails,
     get_members,
     init_db,
+    mark_email_processed,
+    save_email,
     set_setting,
 )
 from app.email_checker import fetch_new_emails
@@ -35,6 +39,12 @@ app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), na
 
 POLL_INTERVAL = int(os.environ.get("POLL_INTERVAL", "60"))
 
+# Senders whose emails get run through the alert classifier
+ALERT_SENDERS = [
+    "cepci@rapidnotifications.com",
+    "smcleod@macspride.com",
+]
+
 
 # ---------------------------------------------------------------------------
 # Background email poller
@@ -45,9 +55,34 @@ async def email_poll_loop():
         try:
             emails = await fetch_new_emails()
             for em in emails:
+                # Save every email to the database
+                is_new = await save_email(
+                    message_id=em["message_id"],
+                    sender=em["sender"],
+                    to_addr=em["to_addr"],
+                    subject=em["subject"],
+                    body_text=em["body_text"],
+                    body_html=em["body_html"],
+                    date=em["date"],
+                    headers=em["headers"],
+                )
+
+                if not is_new:
+                    continue
+
+                logger.info("New email saved: from=%r subject=%r", em["sender"], em["subject"])
+
+                # Check if this sender should trigger alert classification
+                sender_lower = em["sender"].lower()
+                is_alert_sender = any(s in sender_lower for s in ALERT_SENDERS)
+
+                if not is_alert_sender:
+                    await mark_email_processed(em["message_id"], alert_triggered=False)
+                    continue
+
                 result = classify_email(em["subject"], em["body"])
                 logger.info(
-                    "Email: subject=%r level=%s alert=%s",
+                    "Classified: subject=%r level=%s alert=%s",
                     em["subject"],
                     result.level,
                     result.is_alert,
@@ -69,6 +104,7 @@ async def email_poll_loop():
                     sms_sent=sms_sent,
                     recipients=recipients_str,
                 )
+                await mark_email_processed(em["message_id"], alert_triggered=result.is_alert)
 
         except Exception:
             logger.exception("Error in email poll loop")
@@ -89,6 +125,7 @@ async def startup():
 async def index(request: Request):
     members = await get_members()
     alerts = await get_alerts(limit=30)
+    all_emails = await get_emails(limit=50)
     settings = await get_all_settings()
     has_imap = bool(settings.get("imap_user") and settings.get("imap_pass"))
     has_twilio = bool(
@@ -102,10 +139,22 @@ async def index(request: Request):
             "request": request,
             "members": members,
             "alerts": alerts,
+            "all_emails": all_emails,
             "settings": settings,
             "has_imap": has_imap,
             "has_twilio": has_twilio,
         },
+    )
+
+
+@app.get("/emails/{email_id}", response_class=HTMLResponse)
+async def email_detail(request: Request, email_id: int):
+    em = await get_email_by_id(email_id)
+    if not em:
+        return HTMLResponse("Email not found", status_code=404)
+    return templates.TemplateResponse(
+        "email_detail.html",
+        {"request": request, "email": em},
     )
 
 

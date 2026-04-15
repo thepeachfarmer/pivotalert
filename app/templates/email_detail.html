@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Detail - PivotAlert</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .email-meta { margin-bottom: 1rem; }
+        .email-meta dt { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; margin-top: 0.5rem; }
+        .email-meta dd { margin-left: 0; margin-bottom: 0.25rem; }
+        .email-body { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; margin-top: 1rem; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; font-size: 0.85rem; }
+        .email-headers { font-size: 0.75rem; color: var(--text-muted); max-height: 300px; overflow-y: auto; }
+        .back-link { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><span>Pivot</span>Alert</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="/" class="back-link">&larr; Back to Dashboard</a>
+
+        <div class="section" style="margin-top: 1rem;">
+            <h2>{{ email.subject or "(no subject)" }}</h2>
+
+            <dl class="email-meta">
+                <dt>From</dt>
+                <dd>{{ email.sender }}</dd>
+                <dt>To</dt>
+                <dd>{{ email.to_addr }}</dd>
+                <dt>Date</dt>
+                <dd>{{ email.date }}</dd>
+                <dt>Message-ID</dt>
+                <dd style="font-size:0.8rem; word-break:break-all;">{{ email.message_id }}</dd>
+                <dt>Status</dt>
+                <dd>
+                    {% if email.alert_triggered %}
+                    <span class="badge badge-critical">Alert Triggered</span>
+                    {% elif email.processed %}
+                    <span class="badge badge-info">Processed - No Alert</span>
+                    {% else %}
+                    <span class="badge badge-warning">Unprocessed</span>
+                    {% endif %}
+                </dd>
+            </dl>
+        </div>
+
+        <div class="section">
+            <h2>Body (Text)</h2>
+            <div class="email-body">{{ email.body_text or "(empty)" }}</div>
+        </div>
+
+        {% if email.body_html %}
+        <div class="section">
+            <h2>Body (HTML)</h2>
+            <div class="email-body">{{ email.body_html }}</div>
+        </div>
+        {% endif %}
+
+        <div class="section">
+            <details>
+                <summary>Raw Headers</summary>
+                <pre class="email-headers">{{ email.headers }}</pre>
+            </details>
+        </div>
+    </div>
+</body>
+</html>
