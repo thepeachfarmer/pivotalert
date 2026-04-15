@@ -40,6 +40,7 @@ async def init_db():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 message_id TEXT UNIQUE,
                 sender TEXT,
+                original_sender TEXT,
                 to_addr TEXT,
                 subject TEXT,
                 body_text TEXT,
@@ -145,6 +146,7 @@ async def get_alerts(limit: int = 50) -> list[dict]:
 async def save_email(
     message_id: str,
     sender: str,
+    original_sender: str,
     to_addr: str,
     subject: str,
     body_text: str,
@@ -157,9 +159,9 @@ async def save_email(
     try:
         await db.execute(
             "INSERT OR IGNORE INTO emails "
-            "(message_id, sender, to_addr, subject, body_text, body_html, date, headers) "
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            (message_id, sender, to_addr, subject, body_text, body_html, date, headers),
+            "(message_id, sender, original_sender, to_addr, subject, body_text, body_html, date, headers) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (message_id, sender, original_sender, to_addr, subject, body_text, body_html, date, headers),
         )
         await db.commit()
         cursor = await db.execute("SELECT changes()")
@@ -185,7 +187,7 @@ async def get_emails(limit: int = 100) -> list[dict]:
     db = await get_db()
     try:
         cursor = await db.execute(
-            "SELECT id, message_id, sender, to_addr, subject, date, processed, "
+            "SELECT id, message_id, sender, original_sender, to_addr, subject, date, processed, "
             "alert_triggered, created_at FROM emails ORDER BY created_at DESC LIMIT ?",
             (limit,),
         )

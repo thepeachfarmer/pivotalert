@@ -59,6 +59,7 @@ async def email_poll_loop():
                 is_new = await save_email(
                     message_id=em["message_id"],
                     sender=em["sender"],
+                    original_sender=em.get("original_sender", ""),
                     to_addr=em["to_addr"],
                     subject=em["subject"],
                     body_text=em["body_text"],
@@ -72,9 +73,13 @@ async def email_poll_loop():
 
                 logger.info("New email saved: from=%r subject=%r", em["sender"], em["subject"])
 
-                # Check if this sender should trigger alert classification
+                # Check if this sender (or original sender for forwards) should trigger alerts
                 sender_lower = em["sender"].lower()
-                is_alert_sender = any(s in sender_lower for s in ALERT_SENDERS)
+                original_lower = em.get("original_sender", "").lower()
+                is_alert_sender = any(
+                    s in sender_lower or s in original_lower
+                    for s in ALERT_SENDERS
+                )
 
                 if not is_alert_sender:
                     await mark_email_processed(em["message_id"], alert_triggered=False)

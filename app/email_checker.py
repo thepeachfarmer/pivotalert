@@ -47,12 +47,21 @@ async def fetch_new_emails() -> list[dict]:
                 date = msg.get("Date", "")
                 body_text, body_html = _extract_bodies(msg)
 
+                # Resolve original sender from forwarding headers
+                original_sender = (
+                    msg.get("X-Original-Sender")
+                    or msg.get("X-Original-From")
+                    or msg.get("Reply-To")
+                    or ""
+                )
+
                 # Collect all headers as a string for storage
                 headers = str(msg)
 
                 results.append({
                     "message_id": message_id,
                     "sender": sender,
+                    "original_sender": original_sender,
                     "to_addr": to_addr,
                     "subject": subject,
                     "date": date,
