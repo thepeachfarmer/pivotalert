@@ -52,6 +52,11 @@ async def init_db():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         """)
+        # Migrate: add original_sender column if DB was created before it existed
+        try:
+            await db.execute("ALTER TABLE emails ADD COLUMN original_sender TEXT DEFAULT ''")
+        except Exception:
+            pass  # column already exists
         await db.commit()
     finally:
         await db.close()
