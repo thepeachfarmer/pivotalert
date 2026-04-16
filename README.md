@@ -75,7 +75,7 @@ To forward power company emails to the PivotAlert inbox:
 ## Tech Stack
 
 - Python 3.12 + FastAPI
-- SQLite (persisted via Docker volume)
+- SQLite (persisted via Docker volume, auto-migrates on startup)
 - imaplib (stdlib) for IMAP
 - Twilio SDK for SMS
 - Jinja2 templates for the web UI

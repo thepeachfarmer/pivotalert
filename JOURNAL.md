@@ -29,6 +29,9 @@ Added a 15-minute cooldown per alert level. The power company sends updates ever
 ### Custom Test SMS
 Added ability to send a custom test message from the dashboard, alongside the default fun test message. Useful for verifying Twilio is working without sending a canned message.
 
+### Database Migration Bug
+First deploy after the classifier rewrite hit a 500 error — `sqlite3.OperationalError: no such column: original_sender`. The `original_sender` column was added to the schema in the previous commit, but `CREATE TABLE IF NOT EXISTS` doesn't add new columns to an existing table. Fixed by adding an `ALTER TABLE` migration at startup that adds the column if missing and silently skips if it already exists. Lesson: always account for existing databases when adding columns.
+
 ---
 
 ## 2026-04-15 - Project Kickoff

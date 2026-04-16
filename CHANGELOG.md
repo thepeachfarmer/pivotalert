@@ -7,6 +7,7 @@
 - SMS cooldown system: won't send duplicate SMS of the same alert level within 15 minutes (configurable via `SMS_COOLDOWN_MINUTES` env var)
 - Custom test SMS: text input on dashboard to send any message to all members
 - Fun default test SMS message with emojis
+- Database migration for `original_sender` column on existing deployments
 
 ### Changed
 - Rewrote email classifier with 4 actionable categories and custom SMS messages:
