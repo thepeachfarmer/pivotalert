@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from datetime import datetime, timedelta, timezone
 
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
@@ -16,6 +17,7 @@ from app.database import (
     get_all_settings,
     get_email_by_id,
     get_emails,
+    get_last_alert_time,
     get_members,
     init_db,
     mark_email_processed,
@@ -38,6 +40,7 @@ templates = Jinja2Templates(directory=os.path.join(BASE_DIR, "templates"))
 app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 POLL_INTERVAL = int(os.environ.get("POLL_INTERVAL", "60"))
+SMS_COOLDOWN_MINUTES = int(os.environ.get("SMS_COOLDOWN_MINUTES", "15"))
 
 # Senders whose emails get run through the alert classifier
 ALERT_SENDERS = [
@@ -97,9 +100,25 @@ async def email_poll_loop():
                 sms_sent = 0
 
                 if result.is_alert:
-                    sent_to = await send_sms_to_all(result.sms_message)
-                    recipients_str = ", ".join(sent_to)
-                    sms_sent = len(sent_to)
+                    # Check cooldown: skip SMS if we sent this level recently
+                    should_send = True
+                    last_time_str = await get_last_alert_time(result.level)
+                    if last_time_str:
+                        try:
+                            last_time = datetime.fromisoformat(last_time_str).replace(tzinfo=timezone.utc)
+                            if datetime.now(timezone.utc) - last_time < timedelta(minutes=SMS_COOLDOWN_MINUTES):
+                                should_send = False
+                                logger.info(
+                                    "SMS cooldown active for level=%s (last sent %s), skipping",
+                                    result.level, last_time_str,
+                                )
+                        except ValueError:
+                            pass  # bad timestamp, send anyway
+
+                    if should_send:
+                        sent_to = await send_sms_to_all(result.sms_message)
+                        recipients_str = ", ".join(sent_to)
+                        sms_sent = len(sent_to)
 
                 snippet = em["body"][:200] if em["body"] else ""
                 await add_alert(
@@ -202,7 +221,22 @@ async def settings_save(
     return RedirectResponse("/", status_code=303)
 
 
+_DEFAULT_TEST_SMS = (
+    "\U0001f9ea PivotAlert Test \U0001f9ea\n"
+    "\n"
+    "This is a test from PivotAlert! "
+    "If you're reading this, SMS alerts are working. \U0001f389\n"
+    "\n"
+    "\U0001f4a7 Stay cool, keep those pivots rolling!"
+)
+
+
 @app.post("/test/sms")
-async def test_sms():
-    sent = await send_sms_to_all("PivotAlert test message - if you received this, alerts are working!")
+async def test_sms(request: Request):
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    message = body.get("message") or _DEFAULT_TEST_SMS
+    sent = await send_sms_to_all(message)
     return {"sent_to": sent}

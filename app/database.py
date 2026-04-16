@@ -131,6 +131,22 @@ async def add_alert(subject: str, body_snippet: str, alert_level: str, sms_sent:
         await db.close()
 
 
+async def get_last_alert_time(alert_level: str) -> str | None:
+    """Return the created_at timestamp of the most recent alert with this level that sent SMS."""
+    db = await get_db()
+    try:
+        cursor = await db.execute(
+            "SELECT created_at FROM alert_history "
+            "WHERE alert_level = ? AND sms_sent > 0 "
+            "ORDER BY created_at DESC LIMIT 1",
+            (alert_level,),
+        )
+        row = await cursor.fetchone()
+        return row["created_at"] if row else None
+    finally:
+        await db.close()
+
+
 async def get_alerts(limit: int = 50) -> list[dict]:
     db = await get_db()
     try:
