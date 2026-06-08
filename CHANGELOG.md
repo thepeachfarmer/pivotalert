@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-06-08
+
+### Added
+- `energysmartsc@beatthepeak.com` added to the alert sender allowlist. Santee Cooper / Central Electric switched their member notifications from `cepci@rapidnotifications.com` to the Beat the Peak platform. The old address is kept in the list in case any tail-end messages still come from it.
+- `scripts/replay_recent.py` — dry-run script that re-runs the current sender allowlist + classifier against emails from the last N hours and reports what WOULD have fired SMS (sends nothing). Useful for verifying a code change without waiting for the next live event. Streams over stdin via `docker exec`, no rebuild required.
+- `scripts/fire_recent.py` — retroactive SMS fire for emails the live system missed. Safe by default (dry-run); set `CONFIRM_SEND=YES` to actually send. Respects existing cooldown so back-to-back duplicates of the same level produce one SMS, not two.
+- `inbox/` directory with the new Beat the Peak format `.eml` samples (`Beginning Control Now - Santee Cooper`, `Beginning Control in 15 Minutes - Santee Cooper`) for regression reference.
+
+### Known Gap
+- "Control This Evening - Santee Cooper" (Beat the Peak's hours-ahead heads-up — wording new to this provider, never sent by CEPCI) does not match any classifier branch. To pick it up next time, add `"control this evening"`, `"control today"`, `"control tonight"` to the Control Possible subject patterns in `app/classifier.py`.
+
 ## 2026-04-16 (v2)
 
 ### Added

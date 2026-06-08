@@ -1,5 +1,27 @@
 # PivotAlert Development Journal
 
+## 2026-06-08 - Power Company Sender Switch
+
+### What happened
+Missed a real load control event today. Three Beat the Peak / Santee Cooper alerts hit the inbox between 17:30 and 19:00 but never fired SMS because the sender allowlist only knew about the old CEPCI address. By the time it was noticed, control had already started.
+
+### Diagnosis
+Looked at recent emails on the dashboard. The new sender is `EnergySmartSC <energysmartsc@beatthepeak.com>`. Santee Cooper / Central Electric switched their member notifications from `rapidnotifications.com` to the Beat the Peak platform. The emails describe the same kind of event — "Central has initiated a load control event for all participating resources within the Santee Cooper Balancing Authority" — but the new subjects are suffixed with " - Santee Cooper" and the bodies are heavily inline-styled HTML.
+
+### Fix
+1. Added `energysmartsc@beatthepeak.com` to `ALERT_SENDERS` in `app/main.py`. Kept the old CEPCI address in the list in case any tail-end messages still come from it.
+2. Built `scripts/replay_recent.py` — pulls the last N hours of emails from the SQLite DB, runs them through the current sender allowlist + classifier, and reports what would have fired SMS. No rebuild needed — streamed over stdin via `curl raw.github | docker exec -i pivotalert python3`. Used to confirm the patch worked before waiting for the next live event.
+3. Built `scripts/fire_recent.py` — same shape, but actually sends SMS for the missed alerts (gated by `CONFIRM_SEND=YES`). Respects cooldown so a back-to-back "in 15 minutes" + "now" only produces one text. Used it to retroactively alert the chain after the fix went live.
+
+### Replay verdict
+Two of three classified correctly: `Beginning Control in 15 Minutes - Santee Cooper` and `Beginning Control Now - Santee Cooper` both matched the existing `"beginning control"` subject pattern → critical → SMS. The third, `Control This Evening - Santee Cooper` (sent ~90 min before the event), didn't match any classifier branch and was silent. That early-evening heads-up wording is new to Beat the Peak; CEPCI never sent anything like it. Left as a known gap to patch next time we see one come in, by adding `"control this evening" / "control today" / "control tonight"` to the Control Possible branch.
+
+### Lessons
+- **Sender allowlist is the single most fragile config in this app.** When the upstream provider changes, every message is silently dropped — no error, no log, no SMS, the email just sits in the archive marked `alert_triggered = 0`. Worth considering whether to surface an alert when an email from a brand-new sender shows up that contains classifier-keyword content. Or move the allowlist into the database so the dashboard can edit it without a redeploy.
+- **Streaming ops scripts over stdin beats baking them into the image.** Both diagnostic scripts work via `curl raw.github | docker exec -i pivotalert python3`. No rebuild, no redeploy, instant iteration during an active event. Pattern worth reusing for any future one-off operational tooling.
+
+---
+
 ## 2026-04-16 - Classifier Rewrite Based on Real Event Data
 
 ### New Sample Emails

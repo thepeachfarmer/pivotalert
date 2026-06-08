@@ -21,8 +21,11 @@ The power company (via Central Electric / Pee Dee Electric cooperative) sends em
 
 ## Email Sources
 
-- **Direct**: `cepci@rapidnotifications.com` (the power company notification system)
+- **Direct**: `energysmartsc@beatthepeak.com` (Santee Cooper / Central Electric via the Beat the Peak platform — current notification system as of 2026-06-08)
+- **Legacy direct**: `cepci@rapidnotifications.com` (the prior notification system — kept in the allowlist for any tail-end messages)
 - **Forwarded**: Emails forwarded from `smcleod@macspride.com` via Gmail filter. The app reads `X-Original-Sender` headers to identify the real sender on forwarded messages.
+
+The sender allowlist lives in `ALERT_SENDERS` at the top of `app/main.py`. To add a new sender, edit that list, commit, push, and redeploy — the rest of the pipeline is provider-agnostic.
 
 ## Deployment
 
@@ -101,8 +104,41 @@ pivotalert/
 ├── .github/workflows/
 │   └── docker-publish.yml
 ├── sample_emails/           # Original .eml files for reference
-├── new_sample_emails/       # Real event emails from Apr 13-15
+├── new_sample_emails/       # Real event emails from Apr 13-15 (CEPCI format)
+├── inbox/                   # New Beat the Peak / Santee Cooper format samples (Jun 2026)
+├── scripts/
+│   ├── replay_recent.py     # Dry-run replay of last N hours against current classifier
+│   └── fire_recent.py       # Retroactive SMS fire for missed alerts (CONFIRM_SEND=YES to send)
 ├── CHANGELOG.md
 ├── JOURNAL.md
 └── README.md
+```
+
+## Operational Scripts
+
+Both scripts in `scripts/` stream over stdin via `docker exec`, so no rebuild or redeploy is needed to use a newly-committed version.
+
+### Replay recent emails (dry run, no SMS)
+
+Re-runs the current sender allowlist + classifier against emails from the last N hours and reports what would have fired SMS. Use this to verify a change without waiting for the next live event.
+
+```sh
+curl -s https://raw.githubusercontent.com/thepeachfarmer/pivotalert/main/scripts/replay_recent.py \
+  | docker exec -i pivotalert python3
+```
+
+Change the window with `-e REPLAY_HOURS=24`.
+
+### Fire missed alerts (sends real SMS)
+
+Retroactively fires SMS for emails the live system missed (e.g. after fixing a sender allowlist). Safe by default — dry-runs unless `CONFIRM_SEND=YES`. Respects cooldown so duplicates of the same level are suppressed.
+
+```sh
+# Dry run first
+curl -s https://raw.githubusercontent.com/thepeachfarmer/pivotalert/main/scripts/fire_recent.py \
+  | docker exec -i pivotalert python3
+
+# Actually send
+curl -s https://raw.githubusercontent.com/thepeachfarmer/pivotalert/main/scripts/fire_recent.py \
+  | docker exec -i -e CONFIRM_SEND=YES pivotalert python3
 ```
