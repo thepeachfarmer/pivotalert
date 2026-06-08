@@ -45,6 +45,7 @@ SMS_COOLDOWN_MINUTES = int(os.environ.get("SMS_COOLDOWN_MINUTES", "15"))
 # Senders whose emails get run through the alert classifier
 ALERT_SENDERS = [
     "cepci@rapidnotifications.com",
+    "energysmartsc@beatthepeak.com",
     "smcleod@macspride.com",
 ]
 
