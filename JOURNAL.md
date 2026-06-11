@@ -1,5 +1,43 @@
 # PivotAlert Development Journal
 
+## 2026-06-11 - False "Good News" + Missing Heads-Up
+
+### What happened
+Bad alert day. Four emails arrived from Santee Cooper / Beat the Peak; the operator's experience was wrong on both ends.
+
+| Time (EDT) | Subject | What fired | What should have fired |
+|---|---|---|---|
+| 9:53 AM | "No Control This Evening or Tomorrow Morning - Santee Cooper" | ✅ "No control **today**! Good news" | A tempered SMS that quoted the actual timeframe and noted they can change their mind |
+| 1:30 PM | "Control This Evening - Santee Cooper" (body: "Load control **will be initiated** this evening") | nothing — silently archived | ⚠️ HEADS UP — the warning the operator wanted |
+| 2:45 PM | "Beginning Control in 15 Minutes - Santee Cooper" | 🚨 LOAD CONTROL ACTIVE | (correct) |
+| 3:00 PM | "Beginning Control Now - Santee Cooper" | suppressed by 15-min cooldown | (correct) |
+
+Operator's lived experience: woke up to "good news, no control today" → silence → then 15 minutes of warning before pivots needed to be off. The "Control This Evening" message at 1:30 PM was the 1.5-hour heads-up that should have been the loudest alert of the day, and the classifier didn't have a branch for it.
+
+### Diagnosis
+Two distinct bugs.
+
+**Bug 1: over-eager No Control match + lying SMS wording.** The classifier matches `"no control" in subject_lower` and fires a fixed SMS that says "No control today! Good news." But the subject said "this evening or tomorrow morning" — never "today" — and the power company called control at 3pm the same afternoon. The SMS misrepresented the source AND lulled the operator into not watching the inbox.
+
+**Bug 2: known gap from 2026-06-08 still open.** The 2026-06-08 journal entry noted that "Control This Evening" had no classifier branch and flagged it as a future patch. Never patched. Today was the day it cost us.
+
+### Fix
+- New **Control Scheduled** branch in `app/classifier.py`. Matches subjects containing `"control this evening / tonight / today / tomorrow"` or bodies containing `"control will be initiated"`. Uses its own `level="scheduled"` so the heads-up cooldown bucket is separate from the eventual `critical` bucket — firing the warning never suppresses the later "Beginning Control" SMS.
+- **No Control** branch rewritten to mirror the source's stated timeframe. Subject "No Control This Evening or Tomorrow Morning" → SMS "✅ Santee Cooper: no load control expected this evening or tomorrow morning. (They can still change their mind.)". Legacy CEPCI bare "No Control" subject falls back to "no load control expected" with no timeframe.
+- **Branch order**: No Control evaluated BEFORE Control Scheduled, because subjects like "No Control This Evening..." contain both phrases.
+- Added `.badge-scheduled` CSS so the new level renders styled on the dashboard.
+- Saved the four 2026-06-11 emails to `inbox/` as regression anchors.
+
+### Replay verdict
+Running today's four emails through the new classifier in order: `info` (tempered no-control), `scheduled` (the heads-up), `critical` (active), `critical` (suppressed). All four legacy CEPCI samples still classify the same as before.
+
+### Lessons
+- **Fixed SMS strings + substring subject matching is a known-bad combination when the source's wording carries operational nuance.** "No control TODAY!" had no anchor in the source email; we just decided to say it. Better to mirror the source's actual words so the operator hears what the power company actually said, not a paraphrase that drops the qualifier.
+- **A "known gap" documented in JOURNAL.md isn't a fix.** The 2026-06-08 entry knew exactly what to add and didn't. Worth a habit: any "known gap" entry should either spawn a follow-up commit the same day or get a calendar reminder. Documenting a hole in the safety net doesn't patch it.
+- **New alert levels need their own cooldown bucket.** "Scheduled" sharing a bucket with "critical" would have caused the heads-up to suppress the actual "Beginning Control Now" SMS or vice versa. Keep them separate.
+
+---
+
 ## 2026-06-08 - Power Company Sender Switch
 
 ### What happened

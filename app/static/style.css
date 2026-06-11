@@ -197,6 +197,11 @@ th {
     color: #000;
 }
 
+.badge-scheduled {
+    background: #ea580c;
+    color: white;
+}
+
 .badge-info {
     background: var(--accent);
     color: white;

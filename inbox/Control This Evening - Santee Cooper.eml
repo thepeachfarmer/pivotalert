@@ -1,0 +1,330 @@
+Delivered-To: smcleod@macspride.com
+Received: by 2002:a05:6400:424a:20b0:2d5:21d2:dd20 with SMTP id x10-n2csp532343ecx;
+        Thu, 11 Jun 2026 10:30:57 -0700 (PDT)
+X-Forwarded-Encrypted: i=6; AFNElJ/ue98FgwCheBRp/UKJoD8/lPu0IVUyX7ybx8Bgl0UoRfM5DHRLFgvKIDbmDsiFrxwKjRz1oJ6g@macspride.com
+X-Received: by 2002:a05:620a:2b8b:b0:915:d5cd:8ce3 with SMTP id af79cd13be357-9160ac93e1dmr571894685a.14.1781199057755;
+        Thu, 11 Jun 2026 10:30:57 -0700 (PDT)
+ARC-Seal: i=5; a=rsa-sha256; t=1781199057; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=VHKz0FTqGfz28QIR1hrOP6ruwgSK8wMvKskDB2fN6qkSBP98uV1Odw6pM9zi4sZR6c
+         FmgQChvwzxQ3Ovy651lzn6XN9bUGxaHaFqjqHs86od1Z90h4rxNirBTxapGwT8tSY+Dh
+         7kJflvrR0/nD7do6d/bBUPrffZP6IoRMg4bQAk4PzCf+y7zFYcF+R0dNpIm63jnF26ZT
+         SozzRMr7ONnyoomaCuEWsRAPOL16RcfuIV7tvWwHuSCTkXNnMQzIF04EXjFzpxgzFeHE
+         0EU/QDhiChHZPmUcZtTSzp3o98McuBFqukuEfYyONNS4Z7nArWXaP/nP6i2QtHjojuyo
+         AqXw==
+ARC-Message-Signature: i=5; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:to:subject:message-id:mime-version:from
+         :date:content-transfer-encoding:dkim-signature;
+        bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+        fh=7amDx9HdO4aWThrArNLKxSeKmybt3+agr4KKkNa2eIk=;
+        b=Wgi32eomwqCWYikeTdupIwqK5ARHBTnhejSDvTpQAB1QjosaVkTrLtMiJjlqEwVbHr
+         4YLHrXFz0l63ZGRm12mb4umS9w0ls+m1PdGRqLBU0kufop5qogg1HADvS+kZJd6QDxsO
+         J3iiQuBCeyiUIqjBmLSS7JWj/BZW4m6U5EGmtB2Vd+omqF//phNzaxBBtIa84sJM238V
+         9aY/3NTUrTo7QPoHCCmRt6Y2PhWX7gY4y6R6zZAKLewNdBCW9gqgKGfSxXQy4UcUNumF
+         sj+FccqndkSB+YqPebUmeFXveyRh+Uw9H4Q79tryQZLTId2yeHsFR/T0cqnjzQ3+PoDH
+         OFmg==;
+        dara=google.com
+ARC-Authentication-Results: i=5; mx.google.com;
+       dkim=pass header.i=@macspride-com.20251104.gappssmtp.com header.s=20251104 header.b=IlppcJHE;
+       arc=pass (i=4 dkim=pass dkdomain=macspride-com.20251104.gappssmtp.com);
+       spf=softfail (google.com: domain of transitioning accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com does not designate 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom=accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com;
+       dara=fail header.i=@macspride.com
+Return-Path: <accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com>
+Received: from nat.perception-point.io (nat.perception-point.io. [54.227.64.76])
+        by mx.google.com with ESMTPS id af79cd13be357-9160b0974cfsi255501085a.291.2026.06.11.10.30.57
+        for <smcleod@macspride.com>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 10:30:57 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com does not designate 2a01:111:f403:c005::5 as permitted sender) client-ip=2a01:111:f403:c005::5;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@macspride-com.20251104.gappssmtp.com header.s=20251104 header.b=IlppcJHE;
+       arc=pass (i=4 dkim=pass dkdomain=macspride-com.20251104.gappssmtp.com);
+       spf=softfail (google.com: domain of transitioning accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com does not designate 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom=accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com;
+       dara=fail header.i=@macspride.com
+Authentication-Results: amazonses.com;
+ spf=pass (spfCheck: domain of macspride.com designates 209.85.214.200 as permitted sender) client-ip=209.85.214.200; envelope-from=accounting+bncBC6PF3EASAKRBMPBVPIQMGQERU52R4I@macspride.com; helo=mail-pl1-f200.google.com;
+ dkim=pass header.i=@macspride-com.20251104.gappssmtp.com;
+ dmarc=none header.from=beatthepeak.com;
+X-PERCEPTION-POINT-VERDICT: CLN
+X-PERCEPTION-POINT-SPF: 
+X-PERCEPTION-POINT-SPAM: PASS
+X-PERCEPTION-POINT-SENDER-IP: 2a01:111:f403:c005::5
+X-PP-Forefront-Antispam-Report: CIP:159.183.208.8;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wfbtdhhv.outbound-mail.sendgrid.net;PTR:wfbtdhhv.outbound-mail.sendgrid.net;CAT:NONE;SFS:(13230040)(376014)(29132699027)(61400799027)(69100299015)(7149299003)(42112799006)(48200799018)(9140799003)(8096899003)(4076899003)(55112099003)(18002099003)(3023799007)(16102099003)(56012099006)(5063699009)(11063799006)(6133799003);DIR:OUT;SFP:1102;
+Return-Path: <accounting+bncBC6PF3EASAKRBMPBVPIQMGQERU52R4I@macspride.com>
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+ by inbound-smtp.us-east-1.amazonaws.com with SMTP id 830e5fl6btt74e056gis95rv9mm0sdi1255tjpo1
+ for smcleod@macspride.com;
+ Thu, 11 Jun 2026 17:30:28 +0000 (UTC)
+X-SES-Spam-Verdict: PASS
+X-SES-Virus-Verdict: PASS
+Received-SPF: pass (spfCheck: domain of macspride.com designates 209.85.214.200 as permitted sender) client-ip=209.85.214.200; envelope-from=accounting+bncBC6PF3EASAKRBMPBVPIQMGQERU52R4I@macspride.com; helo=mail-pl1-f200.google.com;
+X-SES-RECEIPT: AEFBQUFBQUFBQUFFL3ZwNGZZdU1zSHltRnZwUThqWUZYT2U1TVUvZ2pTZ296elVoWHZLU3p4ZENKY3JZZjhFeXlCTmpocFpkSk50a3FxaXNzd2FzZDFPRGVOdkNhWlF6Z1VpVVgyUlRmTS9pWFJFbkhzcWtONCtkV3pEV2thMXAzRFBXc1ZTL244NjNqdDFpVm5ZV0g4cUR5WUpIRVFZWFlpcDJRaEp4Y2FxMjRHbW9Ba3U0MUFzTVZZMTMwUW5uNDZzMVZUdEpaS3J1a1RQN1l6QW9vUnVQYnExdGRQOUFRVVd4Y2NpYlF1L21nQkZadDlqRWt5SytraVNKQy9vNkhKTmZvUmFrTXE3RmFwZ0o5cU12SXpQSmV2ZmUxRXZmNWdGMlpvMTBIQWlkN1VOcE03S0FiRkFUVGpCZE9YYjh0RnR1cEZ2Y01nNE5rQ1JaaHA2eEk5ZFV1L0VYanNpLzg=
+X-SES-DKIM-SIGNATURE: a=rsa-sha256; q=dns/txt; b=QZaC1+YJZ5ADS+NW61h/RtRfA6xqleeTGf+ARpe2iSB5uEWjVvc86awMkCvjbwhdiHh3mP9xEOz231OSfkHF+9zyylrDaxjrAPDu4c35cfNNNwIQyjji61pbZR2If0bCUXM+t0MdOuNsEBzZbxN5R7Bj/BKF4Sy18u4qpfni/JE=; c=relaxed/simple; s=224i4yxa5dv7c2xz3womw6peuasteono; d=amazonses.com; t=1781199028; v=1; bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=; h=From:To:Cc:Bcc:Subject:Date:Message-ID:MIME-Version:Content-Type:X-SES-RECEIPT;
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2c2d0a8b5beso783825ad.1
+        for <smcleod@macspride.com>; Thu, 11 Jun 2026 10:30:28 -0700 (PDT)
+X-Forwarded-Encrypted: i=5; AFNElJ/qUOxMRx9MEaHmUP5vSEuNsj+F/J3MlwCiqZAnkCl2oXGb795pQjOqF/V8owiKarg1aPkn7StY@macspride.com
+X-Gm-Message-State: AOJu0YxDH/rGPkE0peJYiw64klzv5kzZ8Q76GeMlAXbjSMGeaXKjzVMY
+	w1DaVu8mT84zO40vMW9lp4D7LhsbPGQWQ8T6JFO7fx2924mChPzllwi0FECTjDt6mBTqBfni0a5
+	yVGkIYvBhDzAYmMTEhCWKTuRYgX6a8PoMUp8l1MSGMqTCCBg1O54WXpDsMC9eXYxwxLX2H/aX8X
+	f3aVAuKA5emg==
+X-Gm-Gg: Acq92OE/9t/muB+u4m18YbWBOkhT+paEcsdzPLZt7/4bpA3w1ECJBZJpPcfqdMXTdRV
+	lKMX66q+mTf1/AzhAkjEDGRoL14hBZ0lp2ZGePXSk6DXLbbZctsc4ioine7b1ERTO9wraFwL5oE
+	i17B/Ogu0HwEy57z2dBQ89RT+2212eRxvqrs8HAoJf+bQT2wQ6RUon5Q0ltpRY44Z3noiSF1KU0
+	78nvAq3KaYbqqb/78VNpIHuwgnYYheljTZ4kWX0m+f9tbBY14c386FM8Aao6D8CfjQ2z+lCZiNw
+	yXDIde+tdu7Z0nKTwT718RAGpiYgVnbs36022NtFadvUWigBlbFGAsTp39VXS/O44VPFEILNvo2
+	THg==
+X-Received: by 2002:a17:90b:394d:b0:366:3517:1a95 with SMTP id 98e67ed59e1d1-3778edd65b1mr4577874a91.0.1781199027185;
+        Thu, 11 Jun 2026 10:30:27 -0700 (PDT)
+X-Received: by 2002:a17:90b:394d:b0:366:3517:1a95 with SMTP id 98e67ed59e1d1-3778edd65b1mr4577778a91.0.1781199026133;
+        Thu, 11 Jun 2026 10:30:26 -0700 (PDT)
+ARC-Seal: i=4; a=rsa-sha256; t=1781199026; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=fhqsOCzfOB9v3H94dn+W4dMt9uXA3Z2sMMKJRw61+Z4PU1eNFjRFJGCEj+KpNp36vX
+         qeB2A68q5c+1NY8+zlWcv4zY/y+MVwqyb1d5tUo9iNMw3U7SLSf1UXLHF9zMgV4tTKx9
+         bvXhn36JPerxuqAqZksz0Q28dXiclovJN8PrT3ISnnw4Vb8RRF+dhK2KAUnkmTyzialm
+         k/4mH+E4y5HTmPwZ4AnOh5DNsklUyQC4fg5HnGsxO3bKY2gRXBA1nqqLGgRoYkbCoail
+         kiKb9ljRV0MxeF6TIe2z3xYr96uQu8kRSIpJaUYk8M/atN+AIYQLSNQOmECVwqOnqRaS
+         noPw==
+ARC-Message-Signature: i=4; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:to:subject:message-id:mime-version:from
+         :date:content-transfer-encoding:dkim-signature;
+        bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+        fh=B6xfxZiYBVlOKPbvJbochCUmKkFrFtArpr0eJsUDcr0=;
+        b=fH0tTzEZs+XpOevkSiBWLvh+xfMRb9O9+2VFnfgO7FvOrhhGzUZPQoLSoaA11gg8mN
+         ml/AK/Vi1gfOCbr2zvKpwkhzAUwvPJplpk/UuBfDxhKc/+O80brMmzsYSxJ+xysSZPW7
+         N+IB/gpfVtgkzyYmGu5fT6fEpMMfmgLIbI74dXfGe60U1EDhii8IFpZcvE9wGLQrQg+u
+         2wPxrbMkLDW9HNYw2OwQ/jDOvqTOCN3QK+dWCJnirKZm38oJqh+mykFQg+8CXLHshbLD
+         v+hL532TxiznaH0V8n8SCW07iovvxL2eaFRhfdeKcdw41I6duMgUFHex6LbzqD3m5+hJ
+         Fe1Q==;
+        dara=google.com
+ARC-Authentication-Results: i=4; mx.google.com;
+       dkim=pass header.i=@macspride-com.20251104.gappssmtp.com header.s=20251104 header.b=IlppcJHE;
+       arc=pass (i=3 spf=pass spfdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=peedeeelectric.onmicrosoft.com dkim=pass dkdomain=beatthepeak.com);
+       spf=softfail (google.com: domain of transitioning accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com does not designate 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom=accounting+bncBC6PF3EASAKRBMPBVPIQMGQERU52R4I@macspride.com;
+       dara=fail header.i=@macspride.com
+Return-Path: <accounting+bncBC6PF3EASAKRBMPBVPIQMGQERU52R4I@macspride.com>
+Received: from mail-sor-f69.google.com (mail-sor-f69.google.com. [209.85.220.69])
+        by mx.google.com with SMTPS id 98e67ed59e1d1-37621476b42sor3740680a91.1.2026.06.11.10.30.25
+        for <smcleod@macspride.com>
+        (Google Transport Security);
+        Thu, 11 Jun 2026 10:30:26 -0700 (PDT)
+Received-SPF: softfail (google.com: domain of transitioning accounting+bncbc6pf3easakrbmpbvpiqmgqeru52r4i@macspride.com does not designate 2a01:111:f403:c005::5 as permitted sender) client-ip=2a01:111:f403:c005::5;
+ARC-Seal: i=3; a=rsa-sha256; t=1781199025; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=gkkawTG/t4x36qgaifS9C8P2uOpkASr7vkC9yl1K2FQkSR8j79O1yPnF8nnIsG5slK
+         ymQEUDoD7ZUi3CEe6oE3hploSsLfCBqCs9XNCB2fhb+/qHrebZpI8MUP/Fy5Rva2GYeM
+         6BG3txkHJSmkIWIERkWnvlRLxT7FuHfRR9sJovviYyFhNS33gHQOFYUFWWD1eLsfESZb
+         /axD2F/723VugrPDjpBNwDrICo0Lit/jp2EyVZcwWDLZ8hUy9BdzLeDRT7/OeNYSojGp
+         QS2+rdTqZYPCB6ZH6em1b3ML8UN8PRAO2lRufGNlk964S8hCf1xeDSRMQ4TcOjuGxojU
+         3gYA==
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:to:subject:message-id:mime-version:from
+         :date:content-transfer-encoding:dkim-signature;
+        bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+        fh=B6xfxZiYBVlOKPbvJbochCUmKkFrFtArpr0eJsUDcr0=;
+        b=eNnt7ts3EJbbCa5DlIaCIRsB1gDHbZz4FUeU8i7DJBDi08uwlG/GNsz6z6A5Dk4str
+         deq7zUuxjZt5TVkrO1a07/xW+5wmrKb45cuIt7bMdUMN7+fjzDwURSvKoa3d6KhLQa8n
+         g+aomdy4xrYcYL59uOZvvnEuiLdykfDAtA1jaXOfMO1QY1QGqDjiqakZifSeu0t6N+uf
+         F61X5kKXqOYAopJZJorWQPO/7k0wTstu2mmOxkyN0FvFDaOokWVwPPf4UufP95wrb0dt
+         R2mwa7UoTRSpFbPxXQVCDoM6S1V+cQ8iR0WL0lEV2CDV6u2T6AAOk7DdP+iOXvV0S3A/
+         X2Sg==;
+        darn=macspride.com
+ARC-Authentication-Results: i=3; mx.google.com;
+       dkim=pass header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com header.b=aN4fblJy;
+       dkim=pass header.i=@beatthepeak.com header.s=t header.b=UxK5h2pA;
+       arc=pass (i=1 spf=pass spfdomain=em342.beatthepeak.com dkim=pass dkdomain=beatthepeak.com);
+       spf=pass (google.com: domain of bounces+srs=msv4e=eh@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom="bounces+SRS=mSv4e=EH@peedeeelectric.onmicrosoft.com"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=macspride-com.20251104.gappssmtp.com; s=20251104; t=1781199025; x=1781803825; darn=macspride.com;
+        h=list-unsubscribe:list-archive:list-help:list-post:list-id
+         :mailing-list:precedence:x-original-authentication-results
+         :x-original-sender:to:subject:message-id:mime-version:from:date
+         :content-transfer-encoding:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+        b=IlppcJHEwAYy58Iw7DrudEeUuxU9br7eYh2+E2T6Y+TbXVJOGaA1u3CGh/vg0zETuh
+         rJNsUagW2WFkmjhwngO36UaL+gIZ/E/njzMMn0iZ74eeeCCoIFJAeu+0GlvQuqsxioAs
+         AY4xAELD+eL3D/3G9KHiXnL3ns5J5T4f/s6E+iGQdku+3p+84x6Y3F0f9/LoLmxdO9wx
+         ZwcnelFtnh/HcDQFEV1i72U5VG4JFO1ppoJHyHz3J7oSIntDroue3Hb5Cip0C83w4sP9
+         uEuediTCRCCRLsMBDvQPOPmmBrVvKFWfc1T2YOYtBiXFm5LkLimoPvOiaPzicUOaQVBp
+         4wIg==
+X-Forwarded-Encrypted: i=3; AFNElJ8ApyOifkTi8oG3LNK2yfirBGSYRL2JFCkDvwjMGA6IzeZgwKwnFktwcekYmPHfhc3tzrhrkj1+@macspride.com
+X-Received: by 2002:a17:90b:3f50:b0:369:c5f4:9681 with SMTP id 98e67ed59e1d1-377a870982emr4320874a91.22.1781199025575;
+        Thu, 11 Jun 2026 10:30:25 -0700 (PDT)
+X-BeenThere: accounting@macspride.com; h="AX0PUUdoE0rWBItkvAinscegTzQTDE+k26qjbz21Myr7wwdcmg=="
+Received: by 2002:a17:90b:1e03:b0:367:d0ef:b7eb with SMTP id
+ 98e67ed59e1d1-379c963205als28774a91.2.-pod-prod-01-us; Thu, 11 Jun 2026
+ 10:30:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=3; AFNElJ+kI7nF+91n2wYxK6vjpZH0ZimC0cuom5lnjdHrly0Kd2LDy7IcxwegN1xMN7tEanihL75hO50hAeZF@macspride.com
+X-Received: by 2002:a05:6a21:9208:b0:3a2:dbaa:82ee with SMTP id adf61e73a8af0-3b5e3141747mr4542630637.9.1781199024366;
+        Thu, 11 Jun 2026 10:30:24 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1781199024; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=M30pR5r6v8yV7Z4Ygzc+ZDUfVPl26j5AuQXcyGAMi3wIBpXlwLXgbYi55k0wFsJzT+
+         9fjL/zBN7GySX8DDYpLDvuKknd+w/Ff8InRSeci7XXbg5CJnMVKCBexVZpA1RF9G2oXP
+         0w7VpXHyi/4M/yO+ovXl3Gy90td+7eHO+Q+J/TQxiyDIxoEDcY2AAlJX2zDmCOIbSz3m
+         JJ+jcYcshvUJJUZMMD7kFkyMEm4RnBswX2B/YmCjVBS0ynHP56itNgE7OWbtmQmhNSBE
+         3RERFlEnTIFNs7nzNjjXdiOFrErwJYTQkPtJJPpEflSzTyi0kDNJS+TKqYchw5dFUja1
+         10pw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:mime-version:from:date
+         :content-transfer-encoding:dkim-signature:dkim-signature;
+        bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+        fh=bex1j7Tf+AjYHQ7+KthXN/510lz4nUSRw/66TqYuedo=;
+        b=KW5AHIHFr5g67xVkPXpvmgvUcPIyKGjb7vdTfjKd+dsWitdqt1z6l9MVjmvWAT4ALV
+         kx3XfH1i4Z8BAtyGefRUp5XulwTsMfWLW/uj2+KVZrEJ71J8EbLKeHqI8NDoj12qfzHC
+         DA9k6joXEon4Q5NXeY2PN+xkYbu75Qqce7G9bA1d0MpoIHfoBWfwln0Qe0K7PpKLql0u
+         gy1hjJEwzFBWGd/UtzXb8cJIBaU/p1APFxoqR03gesOfnrdtFw7AYzHq/P3rNmO3lJi+
+         oE7ldauRdywb58TMZO6MELkoyuXJX6Xdp2p2jCTZhiFR8zzqq1ZH9UDj0OGsIBrWOqYs
+         T1Pg==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com header.b=aN4fblJy;
+       dkim=pass header.i=@beatthepeak.com header.s=t header.b=UxK5h2pA;
+       arc=pass (i=1 spf=pass spfdomain=em342.beatthepeak.com dkim=pass dkdomain=beatthepeak.com);
+       spf=pass (google.com: domain of bounces+srs=msv4e=eh@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom="bounces+SRS=mSv4e=EH@peedeeelectric.onmicrosoft.com"
+Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azlp170100005.outbound.protection.outlook.com. [2a01:111:f403:c005::5])
+        by mx.google.com with ESMTPS id 41be03b00d2f7-c86585b5e48si3508669a12.90.2026.06.11.10.30.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jun 2026 10:30:24 -0700 (PDT)
+Received-SPF: pass (google.com: domain of bounces+srs=msv4e=eh@peedeeelectric.onmicrosoft.com designates 2a01:111:f403:c005::5 as permitted sender) client-ip=2a01:111:f403:c005::5;
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IdJMnSth3qQ4D6bX2oBn15JtO35q0nXPjjpcguU54WQ+WDmf73AueKrv0DekQZkJAbMsRPDdg3gRRH8QlNKcTHdBfgrWQ8dEhxsfE74iM9Uft5rAWafcB0LyZtiTrwtG/JfE8Y4lB9/Tc6b2SpAVmnf1dZFJhPn4sFUiN5yf5KUm8/LrontgFsfBeu//9SnrITQ6G6P0tgixwCRixA5gU9FJsUqId8oUt8JiX77mPb6vQXGFKCh2QOksjxxUBs/AH88W8AyNxO5K3B+MnDZ82rs3RJuXNX8/FXFkfuWmwCnn0dlQWr8x96O6dbK99BSK1hPv0fPWJ0zZd6tdz2mhwg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FboazB2gMji3UvQIeBakuZuRE7RtSNot/J5rGTvx8Ik=;
+ b=Wl3KZTH5gPhJu5lEZmSNekvMGARaqp4sjDJuJDKiUCwmeVxmRVf7qW+HP7j10LPw3/kWYCPytLAEh+qc8br/Ii/u37Uniue5ls/osR881FldbPEcUJCjYU0li2XHxamnu3mfI3a7qoj0wdKJKms9Sjp33jOquz2qippUmF5mUv+IsZFfokB0tgE2nA6gRIJrjE0jlQc8H/fOIamrMODtD1litmSkt3UIo2XF454dXLL+577ASE3VSJSORWzmrg8a8nluY27q5T3iUBCkyeaSNqsUlPVL5H3hj4E0TMOcR8zygbB4OZm0tY5bh6AtFvXfWePFGeOfX65eXjMzEn4MjQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 159.183.208.8) smtp.rcpttodomain=mpd.coop
+ smtp.mailfrom=em342.beatthepeak.com; dmarc=bestguesspass action=none
+ header.from=beatthepeak.com; dkim=pass (signature was verified)
+ header.d=beatthepeak.com; arc=none (0)
+Received: from MW4P223CA0016.NAMP223.PROD.OUTLOOK.COM (2603:10b6:303:80::21)
+ by SAWPR02MB11948.namprd02.prod.outlook.com (2603:10b6:806:55b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.13; Thu, 11 Jun
+ 2026 17:30:20 +0000
+Received: from CO1PEPF000066EB.namprd05.prod.outlook.com
+ (2603:10b6:303:80:cafe::8a) by MW4P223CA0016.outlook.office365.com
+ (2603:10b6:303:80::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.11 via Frontend Transport; Thu,
+ 11 Jun 2026 17:30:20 +0000
+Received-SPF: Pass (protection.outlook.com: domain of em342.beatthepeak.com
+ designates 159.183.208.8 as permitted sender)
+ receiver=protection.outlook.com; client-ip=159.183.208.8;
+ helo=wfbtdhhv.outbound-mail.sendgrid.net; pr=C
+Received: from wfbtdhhv.outbound-mail.sendgrid.net (159.183.208.8) by
+ CO1PEPF000066EB.mail.protection.outlook.com (10.167.249.7) with Microsoft
+ SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.7
+ via Frontend Transport; Thu, 11 Jun 2026 17:30:19 +0000
+Received: by recvd-6d75975858-gcf9l with SMTP id recvd-6d75975858-gcf9l-1-6A2AF0A3-2B
+	2026-06-11 17:30:11.842802295 +0000 UTC m=+3787651.466417945
+Received: from MzE3MzE5MTg (unknown)
+	by geopod-ismtpd-11 (SG) with HTTP
+	id 3aYTXvG0TNeQOdEyUwF6ew
+	Thu, 11 Jun 2026 17:30:11.807 +0000 (UTC)
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=us-ascii
+Date: Thu, 11 Jun 2026 17:30:18 +0000 (UTC)
+From: EnergySmartSC <energysmartsc@beatthepeak.com>
+Mime-Version: 1.0
+Message-ID: <3aYTXvG0TNeQOdEyUwF6ew@geopod-ismtpd-11>
+Subject: Control This Evening - Santee Cooper
+X-SG-EID: =?us-ascii?Q?u001=2ELqq46X4Yu27pJcbbzxZnlQBlt3sDLzJkbKAx3z9z4IuoBy5totTsxeiql?=
+ =?us-ascii?Q?91UzY5rdIPPoK9krpBw0Bpn7oOvwRizTPdUcZxj?=
+ =?us-ascii?Q?It3c8MofxBhBzG4IQtuC8B2opN9pj5GVy0KAsmV?=
+ =?us-ascii?Q?3zXVT6=2FRTgrzn+gqJ9G3blWIZIKUwV1uDXz6QNF?=
+ =?us-ascii?Q?ACvt3ov6aijNREwVwM7BXQzNpwfaplW0w0HONZI?=
+ =?us-ascii?Q?csK8kZU3yyxIF5QDutS8HEoFTVD28=2FD5GkpZbLH?=
+ =?us-ascii?Q?J3Fru5JlvnngRCavJCa5DpBCmQ=3D=3D?=
+To: mpdloadcontrolfrontier@mpd.coop
+X-Entity-ID: u001.KyIpT+mcHsffZ9V/KIxzZQ==
+X-EOPAttributedMessage: 0
+X-EOPTenantAttributedMessage: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88:0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000066EB:EE_|SAWPR02MB11948:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bbabe30-6fd1-4d44-1453-08dec7df1c5b
+X-LD-Processed: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88,ExtAddr
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 0
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|29132699027|61400799027|69100299015|7149299003|42112799006|48200799018|9140799003|8096899003|4076899003|55112099003|18002099003|3023799007|16102099003|56012099006|5063699009|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?xpRRkEvCxMg9wE5Hof8G29bCeiW5VJbNZX4FfttxFrBbmMMnQixGcGauy6qL?=
+ =?us-ascii?Q?DYFYdj0APX9uPKRj7dposS408u5f527b9SuvgPeBb3wYEWNVi87btm2z97gM?=
+ =?us-ascii?Q?zPW7zc/NgYFj4sPBHihJhJh+5yknXdhKiOM/BRXEfMO+IFKj6Od0NRGoixWN?=
+ =?us-ascii?Q?qSn3JbmXv/zk6C1wbV/1v8u18gXZPeTak2nV7UMnlKXxjIEHVg02cwHNZlG8?=
+ =?us-ascii?Q?8nnJ1WioZzPh1vB+AmG7mtDuk/eMNGY64TcXiyWfd/grvxgWNarurwcMbTd7?=
+ =?us-ascii?Q?paUY+1ncgzGwLqbmDR2LK2ijVD6OkKlUN+8W7HFGodJcCQP8HZVk2Q4K+Vok?=
+ =?us-ascii?Q?90Om7/kyzgFMpKRTyzmpid0dL7c7duhvr2fwY6ErnLxoeD+ZnFR6xhovd+kY?=
+ =?us-ascii?Q?jmfz+KdIzJK20baoh3Df6wVwWdUaRGoB3nAoIMVunxg5+IEbAigfmqLI6td3?=
+ =?us-ascii?Q?+van3hVWDelZUHYzYXnImzReJYByKQwcGDFAj2x/k+OKlLEh1HBsu8T1cbI2?=
+ =?us-ascii?Q?RqsxM81q6gfaNri0PN+LCF4ha5LAzTELjBPrDhcn8d1LT7gKzZYhV/MyKE9p?=
+ =?us-ascii?Q?+Vo/BaU4H1icaK+e/SpE4HIloHybdvf3aWeOX+xKVPPSe0kJQbOEMmlhcgGj?=
+ =?us-ascii?Q?kTl2HEWehqfOjgx7spoRJvrVXin1P7pWblHGEap8sZ3/eTMku87n7LpNJD+Q?=
+ =?us-ascii?Q?NSutN7up0kNeXaLIFRHf2UhgS02X/1Zu7eBAHgO4DE9G0VOnFuZVccdybH3o?=
+ =?us-ascii?Q?MPJ79V8eTo7+Zf80lw2fDXq9Kna0GfJMv1MGBoa/DioDa/tn0H+fI871Vz5m?=
+ =?us-ascii?Q?ZDjYivcrblhAM/SyI9u+kDssSrnZFgFa+413zICgOgxCeNlhds7g4C0cWGRR?=
+ =?us-ascii?Q?Jkkt4CJJy0oA7MaImgp9xBlubbS2cK0Of93swiSeIAly77tF+ayZDAmrG20Q?=
+ =?us-ascii?Q?sJ6MhVvVxyPBsHHs6Dm19rDSHKiT/SoDmLWIjbJv3I2Jr0ip0qfPOg/rR5po?=
+ =?us-ascii?Q?4NJmRAO0aGwYKsw4Ty3kzvCE30UeVc6k0PHoFdnEWT1YTPoKaUDqKa3Wd4W/?=
+ =?us-ascii?Q?pChhvvW60RNgaN5fia0acC6y+aO0+U4Z37omY2xReaRKkKqrWO2E5ZCk5ZVQ?=
+ =?us-ascii?Q?JUBiqPetAgmw+XDTzKyL1YVm/affHvmhqiJQhKPKpj8IBzod/54l/grZ/lPi?=
+ =?us-ascii?Q?MA2QsyGOiTt8nozrvELKQiblECsI8G4xx6qrQNWnJB7Oy89xbWxS3W+YeQHu?=
+ =?us-ascii?Q?OFYAfyWimnMh+kJ+T9zPPa885lh1NBQnvy65CyLL+RIoTZ/kCL/lQIQsovx0?=
+ =?us-ascii?Q?dmQ=3D?=
+X-Forefront-Antispam-Report: CIP:159.183.208.8;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:wfbtdhhv.outbound-mail.sendgrid.net;PTR:wfbtdhhv.outbound-mail.sendgrid.net;CAT:NONE;SFS:(13230040)(376014)(29132699027)(61400799027)(69100299015)(7149299003)(42112799006)(48200799018)(9140799003)(8096899003)(4076899003)(55112099003)(18002099003)(3023799007)(16102099003)(56012099006)(5063699009)(11063799006)(6133799003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: ZA9t7jOhF0NYKACnHQpVgyy6C4kImzu27+qG4DxiD2pwCAEA2HqAT9IZGeKaDMZfARCbtlZSRZtD6nG/5i4UDiopoqO6wE+bYC2NXVkVY8Pf8ZNhM6om84pbgjJtv4H8hMZ7/ImgLDi4S3pkkaXj4E4dU7WsCN6rAzmWqyzLqin6uHOBjsNJSEDAdTVwyQABcQuXENMGnvMt9na6OePBjaVIvvLvfedYpV5GGIevyHVnZn1AjlH9PRqxQyQBWS2Bky1CJqw+OZOhAgMIz6wCm7DRahCY/MMye3h+N+mJvdQLA4eUmNJ/S/gu5ednt1GzdCtu+UVXBphUldfNanjSeLhOGTByGA62F/tf4ZbH7VliOp6hZIa1+NCZ1nPGWF9ECNBtXbjO/00+JzkdjzVb9OA/VeWjNKzXDR5vOiCZINqQcG4PwNc2uFElGK1dEpCi
+X-ExternalRecipientOutboundConnectors: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+X-OriginatorOrg: peedeeelectric.onmicrosoft.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jun 2026 17:30:19.7873
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bbabe30-6fd1-4d44-1453-08dec7df1c5b
+X-MS-Exchange-CrossTenant-Id: f0fa1ca7-f512-46a9-af1b-c95d7ebfaa88
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000066EB.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: Internet
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR02MB11948
+X-Original-Sender: energysmartsc@beatthepeak.com
+X-Original-Authentication-Results: mx.google.com;       dkim=pass
+ header.i=@peedeeelectric.onmicrosoft.com header.s=selector1-peedeeelectric-onmicrosoft-com
+ header.b=aN4fblJy;       dkim=pass header.i=@beatthepeak.com header.s=t
+ header.b=UxK5h2pA;       arc=pass (i=1 spf=pass spfdomain=em342.beatthepeak.com
+ dkim=pass dkdomain=beatthepeak.com);       spf=pass (google.com: domain of
+ bounces+srs=msv4e=eh@peedeeelectric.onmicrosoft.com designates
+ 2a01:111:f403:c005::5 as permitted sender) smtp.mailfrom="bounces+SRS=mSv4e=EH@peedeeelectric.onmicrosoft.com"
+Precedence: list
+Mailing-list: list accounting@macspride.com; contact accounting+owners@macspride.com
+List-ID: <accounting.macspride.com>
+X-Spam-Checked-In-Group: accounting@macspride.com
+X-Google-Group-Id: 950183992565
+List-Post: <https://groups.google.com/a/macspride.com/group/accounting/post>, <mailto:accounting@macspride.com>
+List-Help: <https://support.google.com/a/macspride.com/bin/topic.py?topic=25838>,
+ <mailto:accounting+help@macspride.com>
+List-Archive: <https://groups.google.com/a/macspride.com/group/accounting/>
+List-Unsubscribe: <mailto:googlegroups-manage+950183992565+unsubscribe@googlegroups.com>,
+ <https://groups.google.com/a/macspride.com/group/accounting/subscribe>
+X-PERCEPTION-POINT-ROUTING:  AQWEDSFQ
+X-Gm-Spam: 0
+X-Gm-Phishy: 0
+
+<p style=3D"text-align: start;">Load control will be initiated this evening=
+ within the Santee Cooper Balancing Authority. Additional instructions will=
+ follow.</p><br/>NOTICE: This message contains confidential information int=
+ended only for the recipient. Do not forward or share. Generators affected =
+must operate in compliance with applicable environmental regulations. Non-c=
+ompliance may result in civil or criminal liability.<img src=3D"http://url8=
+763.beatthepeak.com/wf/open?upn=3Du001.7m9E3KPzoOLSY-2BpNkbciYwkRq0Nn-2B9L0=
+UbmnLx-2FqATAL4909yZb4MRw2bt89KDxd-2BOUi5GiOUjYYKYdss7XwlbHWyotKSnPnOaM8o-2=
+Fr49dGL3y5M2S5h-2B3VZLyDjzrLFu9YzsGK4poX89rtYgwz3TiJKLK-2BV9X23155E2dbEG1PS=
+TpkUJzfF457CSP1kuHiZsLcUyA24gpHK-2BhdEwagMuPfEL8W0RmahmeGUWlCMnpM-3D" alt=
+=3D"" width=3D"1" height=3D"1" border=3D"0" style=3D"height:1px !important;=
+width:1px !important;border-width:0 !important;margin-top:0 !important;marg=
+in-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;p=
+adding-top:0 !important;padding-bottom:0 !important;padding-right:0 !import=
+ant;padding-left:0 !important;"/>

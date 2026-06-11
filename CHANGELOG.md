@@ -1,5 +1,19 @@
 # Changelog
 
+## 2026-06-11
+
+### Added
+- New **Control Scheduled** classifier branch — fires on Beat the Peak's hours-ahead "Control This Evening / Tonight / Today / Tomorrow" subjects and on bodies containing `"load control will be initiated"` / `"control will be initiated"`. SMS: `⚠️ HEADS UP: Santee Cooper has announced a load control event {timeframe}. It IS coming — prepare to shut down pivots.` Uses its own `level="scheduled"` so the cooldown bucket is separate from `critical` — i.e. firing the heads-up does NOT suppress the later "Beginning Control" critical SMS.
+- `.badge-scheduled` CSS rule (orange) for the new alert level so dashboard badges render styled.
+- Two new regression samples in `inbox/`: `Control This Evening - Santee Cooper.eml` and `No Control This Evening or Tomorrow Morning - Santee Cooper.eml` (both from the 2026-06-11 event).
+
+### Changed
+- **No Control** SMS no longer says "No control **today**! Good news." It now mirrors the source subject's timeframe (e.g. "no load control expected this evening or tomorrow morning") and adds the caveat "(They can still change their mind.)". Triggered by the 2026-06-11 false-positive where the 9:53 AM email said "this evening or tomorrow morning" — but the classifier promised "today" and control was called at 3 PM. Wording now matches what the source actually said.
+- Branch order: **No Control is now evaluated before Control Scheduled**, because a subject like "No Control This Evening or Tomorrow Morning" contains both `"no control"` and `"this evening"`. No Control must win.
+
+### Fixed
+- Closes the "known gap" from the 2026-06-08 entry — the Beat the Peak hours-ahead heads-up message now triggers an SMS warning instead of being silently archived.
+
 ## 2026-06-08
 
 ### Added
