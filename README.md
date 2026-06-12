@@ -9,13 +9,16 @@ The power company (via Central Electric / Pee Dee Electric cooperative) sends em
 ## How It Works
 
 1. **Email Polling** - Checks a Gmail inbox via IMAP every 60 seconds for new emails
-2. **Classification** - Parses the email subject/body and maps to 4 actionable categories:
-   - **Taking Control** - "Beginning control now", "implement control now", "taking control of interruptibles" → SMS: 🚨 LOAD CONTROL ACTIVE! Turn pivots OFF now!
-   - **Releasing Control** - "Releasing Control Now", "releasing control of interruptibles" → SMS: 🟢 Control is being released. You can turn pivots back on.
-   - **No Control** - "No control" / "will not be required" → SMS: ✅ No control today! Good news.
-   - **Control Possible** - "Control is possible" → SMS: ⚠️ Control is possible today. Stay vigilant.
-   - Intermediate messages (rampouts, maintaining control, line regulators) are stored but do not trigger SMS
-3. **SMS Cooldown** - Won't send duplicate SMS of the same alert level within 15 minutes (configurable via `SMS_COOLDOWN_MINUTES`)
+2. **Classification** - Parses the email subject/body and maps to 5 actionable categories. Listed in evaluation order:
+   - **Taking Control** *(critical)* — "Beginning control now", "implement control now", "taking control of interruptibles" → SMS: 🚨 LOAD CONTROL ACTIVE! Turn pivots OFF now!
+   - **Releasing Control** *(info)* — "Releasing Control Now", "releasing control of interruptibles" → SMS: 🟢 Control is being released. You can turn pivots back on.
+   - **No Control** *(info)* — Subject begins with "No Control" / body says "will not be required" → SMS mirrors the source's stated timeframe, e.g. `✅ Santee Cooper: no load control expected this evening or tomorrow morning. (They can still change their mind.)` Falls back to "no load control expected" if the subject carries no timeframe. *Caveat is load-bearing — the 2026-06-11 event proved the source can flip mid-day.*
+   - **Control Scheduled** *(scheduled)* — Subject contains "control this evening / tonight / today / tomorrow" OR body contains "control will be initiated" → SMS: ⚠️ HEADS UP: Santee Cooper has announced a load control event {timeframe}. It IS coming — prepare to shut down pivots. *Firm commitment, hours of lead time. Distinct from Control Possible (which is hedged).*
+   - **Control Possible** *(warning)* — "Control is possible" → SMS: ⚠️ Control is possible today. Stay vigilant and be ready to shut down pivots.
+   - Intermediate messages (rampouts, maintaining control, line regulators) are stored but do not trigger SMS.
+
+   Branch order matters: **No Control is evaluated before Control Scheduled**, because subjects like "No Control This Evening or Tomorrow Morning" contain both `"no control"` and `"this evening"`.
+3. **SMS Cooldown** - Won't send duplicate SMS of the same alert level within 15 minutes (configurable via `SMS_COOLDOWN_MINUTES`). Each level has its own cooldown bucket — firing a `scheduled` heads-up does NOT suppress the later `critical` "Beginning Control" SMS.
 4. **SMS Alerts** - Sends text messages to all registered members via Twilio
 5. **Email Archive** - Every email that hits the inbox is saved to the database for future review, regardless of whether it triggered an alert
 
