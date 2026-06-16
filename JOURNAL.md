@@ -1,5 +1,40 @@
 # PivotAlert Development Journal
 
+## 2026-06-12 — Fix Landed In Git, Not In The Container
+
+### What happened
+Bad alert day, second time in five days. Beat the Peak sent the usual escalation; the operator got one SMS for the whole event.
+
+| Time (EDT) | Subject | What fired | What should have fired |
+|---|---|---|---|
+| 1:30 PM | "Control This Evening - Santee Cooper" (body: "Load control will be initiated this evening") | nothing — silently archived | ⚠️ HEADS UP |
+| 1:45 PM | "Beginning Control in 15 Minutes - Santee Cooper" | 🚨 LOAD CONTROL ACTIVE (1:46 PM) | (correct) |
+| 2:00 PM | "Beginning Control Now" (assumed; arrived after the 15-min cooldown window) | suppressed by cooldown | (correct) |
+
+The 1:30 PM "Control This Evening" message is the exact failure case the 2026-06-11 fix (`b7d0edc`) was written to catch — the new Control Scheduled branch was supposed to mirror it as a ⚠️ HEADS UP SMS. It went silent instead.
+
+### Diagnosis
+The Control Scheduled fix landed in git on 2026-06-11 17:34 EDT and CI built `ghcr.io/thepeachfarmer/pivotalert:latest` successfully at 21:34 UTC the same evening. But the running container was created on **2026-06-08 15:43:10 EDT** — two minutes after commit `8144648` (the sender allowlist fix). Every commit after that, including `b7d0edc`, was in git and in GHCR but never pulled into the container.
+
+Portainer does not auto-pull `:latest` on its own. Compose's `restart: unless-stopped` policy restarts the same image; it does not reach back to the registry. The image only refreshes when someone clicks "Update the stack" with the **Pull image** toggle enabled. Nobody did between Jun 8 and Jun 12.
+
+Bench-classifying today's "Control This Evening" body confirms the split:
+- pre-`b7d0edc` classifier (what was actually running): `level=none` → silent
+- current `main`: `level=scheduled` → would fire the ⚠️ HEADS UP
+
+That's exactly what the operator experienced. The 1:45 PM "Beginning Control in 15 Minutes" critical SMS fired correctly because that subject has matched `"beginning control"` since the April rewrite, so the stale code handled it fine. Same sender, same pipeline; what failed was specifically the classifier branch missing from the running image.
+
+### Fix
+- Redeployed the `pivotalert` stack in Portainer with "Pull image" enabled. Container is now on `b7d0edc`, with the Control Scheduled branch and the corrected No Control SMS wording both live.
+- No code changes today; the fix has been in `main` since 2026-06-11.
+
+### Lessons
+- **"Committed + CI green" is not "live."** This is the second time in a week a behavior fix has been silently stale because Portainer didn't pull the new `:latest`. The 2026-06-08 sender fix only worked because someone redeployed two minutes after the commit landed; the 2026-06-11 classifier fix sat in GHCR for ~44 hours before the next real event exposed that nothing had pulled it.
+- **Container create time is the deployment manifest.** When debugging "is the live system on the new code?", look at the container's Created timestamp and find the most recent commit at or before that moment. Everything after is missing.
+- **Wire a Portainer redeploy webhook into the build workflow.** GitHub Actions can `curl` Portainer's stack webhook after `docker push` succeeds — that closes the loop so a push automatically rolls the container. Tracked as the next operational improvement; until it lands, every behavior-changing commit needs a manual Portainer "Update the stack" with Pull image enabled, or the live system keeps running stale code.
+
+---
+
 ## 2026-06-11 - False "Good News" + Missing Heads-Up
 
 ### What happened

@@ -60,6 +60,20 @@ volumes:
   pivotalert_data:
 ```
 
+### Refreshing the image after a code change
+
+CI (`.github/workflows/docker-publish.yml`) builds `ghcr.io/thepeachfarmer/pivotalert:latest` on every push to `main`. **Portainer does not automatically pull the new image.** The container keeps running whichever image it was created with — `restart: unless-stopped` restarts the same image, it does not reach back to the registry.
+
+To pick up a new commit:
+
+1. In Portainer → Stacks → `pivotalert`, click **Update the stack**.
+2. Enable the **Pull image** toggle.
+3. Click "Update".
+
+To confirm what's live, compare the container's "Created" timestamp to `git log` — any commit at or before that moment is live, anything after is not.
+
+> ⚠️ Easy to forget. The 2026-06-12 journal entry documents a missed-alert day caused by a classifier fix that had been merged and built but never pulled into the running container.
+
 ### Configuration
 
 All configuration is done through the web UI at `http://<host>:8080`:

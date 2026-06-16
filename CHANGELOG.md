@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-12
+
+### Operational
+- Redeployed the live container to pick up `b7d0edc` (2026-06-11). The image had been built and pushed to GHCR the previous evening, but the running container — created 2026-06-08 15:43:10 EDT, two minutes after the sender allowlist fix — had never pulled the newer `:latest`. Portainer does not auto-pull on `restart: unless-stopped`; the registry refresh only happens on a manual "Update the stack" with **Pull image** enabled. Surfaced when a 1:30 PM "Control This Evening - Santee Cooper" email went silent today, exactly as it would have under the pre-fix classifier. No code changes — the Control Scheduled branch shipped on 2026-06-11.
+
+### Known Gap
+- The Build-and-Push workflow does not trigger a Portainer redeploy. Pushes to `main` build a new `:latest` in GHCR, but the live container keeps running whichever image it was created with until someone manually redeploys with Pull image enabled. Next step: add a Portainer stack-webhook `curl` at the end of `.github/workflows/docker-publish.yml` so every successful push refreshes the live container automatically.
+
 ## 2026-06-11
 
 ### Added
